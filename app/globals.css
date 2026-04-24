@@ -1,10 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f8fb;
+  --background: #f5f7fb;
   --foreground: #172033;
   --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --border: #dbe3ef;
   --muted: #64748b;
+  --brand: #0f766e;
+  --brand-strong: #115e59;
+  --danger: #e11d48;
+  --shadow: 0 18px 50px rgb(15 23 42 / 0.08);
+  --shell-bg: linear-gradient(135deg, #f8fafc 0%, #edf7f4 48%, #f7f3ff 100%);
+}
+
+:root[data-theme="dark"] {
+  --background: #10141d;
+  --foreground: #f4f7fb;
+  --surface: #161d29;
+  --surface-muted: #1d2634;
+  --border: #2b3546;
+  --muted: #a5b4c7;
+  --brand: #2dd4bf;
+  --brand-strong: #5eead4;
+  --danger: #fb7185;
+  --shadow: 0 20px 60px rgb(0 0 0 / 0.32);
+  --shell-bg: linear-gradient(135deg, #10141d 0%, #13251f 48%, #211b2d 100%);
 }
 
 @theme inline {
@@ -32,7 +53,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -47,4 +69,84 @@ button:disabled {
 ::selection {
   background: #b7f7e5;
   color: #083344;
+}
+
+@layer components {
+  .app-shell {
+    background: var(--shell-bg);
+  }
+
+  .dashboard-card {
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    box-shadow: var(--shadow);
+    color: var(--foreground);
+  }
+
+  .soft-card {
+    border: 1px solid var(--border);
+    background: var(--surface-muted);
+  }
+
+  .section-title {
+    color: var(--foreground);
+  }
+
+  .section-muted {
+    color: var(--muted);
+  }
+
+  .field-control {
+    min-height: 2.75rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--foreground);
+    outline: none;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      background 160ms ease;
+  }
+
+  .field-control::placeholder {
+    color: color-mix(in srgb, var(--muted) 76%, transparent);
+  }
+
+  .field-control:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent);
+  }
+
+  .primary-button {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  .primary-button:hover {
+    background: color-mix(in srgb, var(--foreground) 88%, var(--brand) 12%);
+  }
+
+  .accent-button {
+    background: var(--brand);
+    color: #ffffff;
+  }
+
+  .accent-button:hover {
+    background: var(--brand-strong);
+  }
+
+  .icon-button {
+    border: 1px solid transparent;
+    color: var(--muted);
+  }
+
+  .icon-button:hover {
+    border-color: var(--border);
+    background: var(--surface-muted);
+    color: var(--foreground);
+  }
+
+  .attention-row {
+    background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  }
 }
