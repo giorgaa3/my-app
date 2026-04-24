@@ -1,8 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { HabitSection } from "@/components/habits/HabitSection";
+import { AchievementsPanel } from "@/components/lifequest/AchievementsPanel";
+import { CharacterCard } from "@/components/lifequest/CharacterCard";
+import { DailyQuestBoard } from "@/components/lifequest/DailyQuestBoard";
+import { FocusArena } from "@/components/lifequest/FocusArena";
+import { LifeAreasGrid } from "@/components/lifequest/LifeAreasGrid";
+import { RewardShop } from "@/components/lifequest/RewardShop";
 import { TaskSection } from "@/components/tasks/TaskSection";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -13,11 +19,22 @@ import { useToast } from "@/hooks/useToast";
 import { getTodayKey } from "@/lib/date";
 import { getHabitDashboardSummary, normalizeHabits } from "@/lib/habits";
 import { createId } from "@/lib/id";
+import {
+  addReward,
+  FOCUS_REWARD,
+  getHabitCheckInKey,
+  HABIT_REWARD,
+  initialLifeQuestProfile,
+  normalizeLifeQuestProfile,
+  syncLifeQuestProfile,
+  TASK_REWARDS,
+} from "@/lib/lifequest";
 import { getTaskSummary, normalizeTasks } from "@/lib/tasks";
 import type {
   DashboardStats,
   Habit,
   HabitInput,
+  LifeQuestProfile,
   Task,
   TaskFilter,
   TaskInput,
@@ -27,6 +44,7 @@ import { WelcomePanel } from "./WelcomePanel";
 
 const TASK_STORAGE_KEY = "pulseboard:tasks";
 const HABIT_STORAGE_KEY = "pulseboard:habits";
+const LIFEQUEST_PROFILE_STORAGE_KEY = "lifequest:profile";
 const INITIAL_TASKS: Task[] = [];
 const INITIAL_HABITS: Habit[] = [];
 
@@ -40,12 +58,21 @@ export default function Dashboard() {
     HABIT_STORAGE_KEY,
     INITIAL_HABITS,
   );
+  const [storedProfile, setProfile] =
+    useLocalStorageState<LifeQuestProfile>(
+      LIFEQUEST_PROFILE_STORAGE_KEY,
+      initialLifeQuestProfile,
+    );
   const { theme, toggleTheme } = useTheme();
   const { dismissToast, showToast, toasts } = useToast();
 
   const todayKey = getTodayKey();
   const tasks = useMemo(() => normalizeTasks(storedTasks), [storedTasks]);
   const habits = useMemo(() => normalizeHabits(storedHabits), [storedHabits]);
+  const profile = useMemo(
+    () => normalizeLifeQuestProfile(storedProfile),
+    [storedProfile],
+  );
   const taskSummary = useMemo(
     () => getTaskSummary(tasks, todayKey),
     [tasks, todayKey],
@@ -54,6 +81,7 @@ export default function Dashboard() {
     () => getHabitDashboardSummary(habits, todayKey),
     [habits, todayKey],
   );
+
   const stats: DashboardStats = {
     activeHabits: habits.length,
     completedTasks: taskSummary.completed,
@@ -67,14 +95,24 @@ export default function Dashboard() {
     totalTasks: tasks.length,
   };
 
+  const saveProfile = useCallback(
+    (nextProfile: LifeQuestProfile, nextTasks = tasks, nextHabits = habits) => {
+      setProfile(
+        syncLifeQuestProfile(nextProfile, nextTasks, nextHabits, todayKey),
+      );
+    },
+    [habits, setProfile, tasks, todayKey],
+  );
+
   function addTask(taskInput: TaskInput) {
     if (!taskInput.title.trim()) {
       showToast("Add a task title first.", "error");
       return;
     }
 
-    setTasks((currentTasks) => [
+    setTasks([
       {
+        category: taskInput.category,
         completed: false,
         createdAt: new Date().toISOString(),
         dueDate: taskInput.dueDate,
@@ -82,10 +120,10 @@ export default function Dashboard() {
         priority: taskInput.priority,
         title: taskInput.title.trim(),
       },
-      ...normalizeTasks(currentTasks),
+      ...tasks,
     ]);
 
-    showToast("Task added to your plan.", "success");
+    showToast("Quest added to your log.", "success");
   }
 
   function updateTask(taskId: string, taskInput: TaskInput) {
@@ -94,11 +132,12 @@ export default function Dashboard() {
       return;
     }
 
-    setTasks((currentTasks) =>
-      normalizeTasks(currentTasks).map((task) =>
+    setTasks(
+      tasks.map((task) =>
         task.id === taskId
           ? {
               ...task,
+              category: taskInput.category,
               dueDate: taskInput.dueDate,
               priority: taskInput.priority,
               title: taskInput.title.trim(),
@@ -107,26 +146,46 @@ export default function Dashboard() {
       ),
     );
 
-    showToast("Task updated.", "success");
+    showToast("Quest updated.", "success");
   }
 
   function toggleTask(taskId: string) {
     const task = tasks.find((currentTask) => currentTask.id === taskId);
 
-    setTasks((currentTasks) =>
-      normalizeTasks(currentTasks).map((currentTask) =>
-        currentTask.id === taskId
-          ? { ...currentTask, completed: !currentTask.completed }
-          : currentTask,
-      ),
-    );
+    if (!task) {
+      return;
+    }
 
-    if (task) {
-      showToast(
-        task.completed ? "Task moved back to active." : "Task completed.",
-        "success",
+    const isCompleting = !task.completed;
+    const completedAt = isCompleting ? new Date().toISOString() : undefined;
+    const nextTasks = tasks.map((currentTask) =>
+      currentTask.id === taskId
+        ? { ...currentTask, completed: isCompleting, completedAt }
+        : currentTask,
+    );
+    let nextProfile = profile;
+
+    if (isCompleting && !profile.rewardedTaskIds.includes(task.id)) {
+      nextProfile = addReward(
+        {
+          ...profile,
+          rewardedTaskIds: [...profile.rewardedTaskIds, task.id],
+          totalTaskCompletions: profile.totalTaskCompletions + 1,
+        },
+        TASK_REWARDS[task.priority],
+        todayKey,
       );
     }
+
+    setTasks(nextTasks);
+    saveProfile(nextProfile, nextTasks, habits);
+
+    showToast(
+      isCompleting
+        ? `Quest complete: +${TASK_REWARDS[task.priority].xp} XP`
+        : "Task moved back to active.",
+      isCompleting ? "success" : "info",
+    );
   }
 
   function deleteTask(taskId: string) {
@@ -136,12 +195,7 @@ export default function Dashboard() {
       return;
     }
 
-    setTasks((currentTasks) =>
-      normalizeTasks(currentTasks).filter(
-        (currentTask) => currentTask.id !== taskId,
-      ),
-    );
-
+    setTasks(tasks.filter((currentTask) => currentTask.id !== taskId));
     showToast("Task deleted.", "info");
   }
 
@@ -162,51 +216,71 @@ export default function Dashboard() {
       return;
     }
 
-    setHabits((currentHabits) => [
+    setHabits([
       {
         category: habitInput.category,
         completedDates: [],
         createdAt: new Date().toISOString(),
-        emoji: habitInput.emoji.trim() || "🌿",
+        emoji: habitInput.emoji.trim() || "🌱",
         id: createId("habit"),
         name: trimmedName,
       },
-      ...normalizeHabits(currentHabits),
+      ...habits,
     ]);
 
-    showToast("Habit added.", "success");
+    showToast("Habit added to your training plan.", "success");
   }
 
   function toggleHabitToday(habitId: string) {
     const habit = habits.find((currentHabit) => currentHabit.id === habitId);
 
-    setHabits((currentHabits) =>
-      normalizeHabits(currentHabits).map((currentHabit) => {
-        if (currentHabit.id !== habitId) {
-          return currentHabit;
-        }
+    if (!habit) {
+      return;
+    }
 
-        const hasCompletedToday = currentHabit.completedDates.includes(todayKey);
+    const checkInKey = getHabitCheckInKey(habitId, todayKey);
+    const hasCompletedToday = habit.completedDates.includes(todayKey);
+    const nextHabits = habits.map((currentHabit) => {
+      if (currentHabit.id !== habitId) {
+        return currentHabit;
+      }
 
-        return {
-          ...currentHabit,
-          completedDates: hasCompletedToday
-            ? currentHabit.completedDates.filter(
-                (dateKey) => dateKey !== todayKey,
-              )
-            : [...currentHabit.completedDates, todayKey].sort(),
-        };
-      }),
-    );
+      return {
+        ...currentHabit,
+        completedDates: hasCompletedToday
+          ? currentHabit.completedDates.filter((dateKey) => dateKey !== todayKey)
+          : [...currentHabit.completedDates, todayKey].sort(),
+      };
+    });
+    let nextProfile = profile;
 
-    if (habit) {
-      showToast(
-        habit.completedDates.includes(todayKey)
-          ? "Today's habit check-in was removed."
-          : "Habit checked off for today.",
-        "success",
+    if (
+      !hasCompletedToday &&
+      !profile.rewardedHabitCheckIns.includes(checkInKey)
+    ) {
+      nextProfile = addReward(
+        {
+          ...profile,
+          rewardedHabitCheckIns: [
+            ...profile.rewardedHabitCheckIns,
+            checkInKey,
+          ],
+          totalHabitCompletions: profile.totalHabitCompletions + 1,
+        },
+        HABIT_REWARD,
+        todayKey,
       );
     }
+
+    setHabits(nextHabits);
+    saveProfile(nextProfile, tasks, nextHabits);
+
+    showToast(
+      hasCompletedToday
+        ? "Today's habit check-in was removed."
+        : `Habit complete: +${HABIT_REWARD.xp} XP`,
+      hasCompletedToday ? "info" : "success",
+    );
   }
 
   function resetHabit(habitId: string) {
@@ -216,8 +290,8 @@ export default function Dashboard() {
       return;
     }
 
-    setHabits((currentHabits) =>
-      normalizeHabits(currentHabits).map((currentHabit) =>
+    setHabits(
+      habits.map((currentHabit) =>
         currentHabit.id === habitId
           ? { ...currentHabit, completedDates: [] }
           : currentHabit,
@@ -234,14 +308,24 @@ export default function Dashboard() {
       return;
     }
 
-    setHabits((currentHabits) =>
-      normalizeHabits(currentHabits).filter(
-        (currentHabit) => currentHabit.id !== habitId,
-      ),
-    );
-
+    setHabits(habits.filter((currentHabit) => currentHabit.id !== habitId));
     showToast("Habit deleted.", "info");
   }
+
+  const completeFocusSession = useCallback(() => {
+    const nextProfile = addReward(
+      {
+        ...profile,
+        completedFocusSessions: profile.completedFocusSessions + 1,
+        focusSessionDates: [...profile.focusSessionDates, todayKey],
+      },
+      FOCUS_REWARD,
+      todayKey,
+    );
+
+    saveProfile(nextProfile, tasks, habits);
+    showToast(`Focus session complete: +${FOCUS_REWARD.xp} XP`, "success");
+  }, [habits, profile, saveProfile, showToast, tasks, todayKey]);
 
   return (
     <main className="app-shell min-h-screen px-4 py-5 sm:px-6 lg:px-8">
@@ -249,14 +333,14 @@ export default function Dashboard() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         <header className="dashboard-card flex flex-col gap-4 rounded-2xl px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div className="flex items-center gap-3">
-            <div className="brand-mark flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
-              <Icon name="target" className="h-5 w-5" />
+            <div className="brand-mark flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl">
+              ⚔️
             </div>
             <div>
               <p className="section-muted text-sm font-medium">
-                Task & Habit Tracker
+                Productivity RPG Dashboard
               </p>
-              <p className="section-title text-xl font-semibold">PulseBoard</p>
+              <p className="section-title text-xl font-semibold">LifeQuest</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -268,6 +352,16 @@ export default function Dashboard() {
           </div>
         </header>
 
+        <div className="grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
+          <CharacterCard profile={profile} todayKey={todayKey} />
+          <DailyQuestBoard
+            habits={habits}
+            profile={profile}
+            tasks={tasks}
+            todayKey={todayKey}
+          />
+        </div>
+
         <WelcomePanel
           activeTasks={taskSummary.active}
           bestStreak={habitSummary.bestStreak}
@@ -277,6 +371,8 @@ export default function Dashboard() {
         />
 
         <StatsGrid stats={stats} />
+
+        <LifeAreasGrid habits={habits} tasks={tasks} todayKey={todayKey} />
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
           <TaskSection
@@ -298,6 +394,13 @@ export default function Dashboard() {
             todayKey={todayKey}
           />
         </div>
+
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+          <FocusArena onCompleteSession={completeFocusSession} tasks={tasks} />
+          <RewardShop profile={profile} />
+        </div>
+
+        <AchievementsPanel profile={profile} todayKey={todayKey} />
       </div>
     </main>
   );

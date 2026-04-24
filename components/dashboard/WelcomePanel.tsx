@@ -31,11 +31,11 @@ export function WelcomePanel({
             Today&apos;s focus
           </div>
           <h1 className="section-title mt-5 text-3xl font-semibold sm:text-4xl">
-            A calmer way to see what matters next.
+            Level up your real life, one quest at a time.
           </h1>
           <p className="section-muted mt-3 max-w-2xl text-base leading-7">
-            Start with one visible task, keep routines moving, and let the
-            dashboard show progress at a glance.
+            Tasks, habits, and focus sessions now feed XP, coins, achievements,
+            and life-area progress.
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">

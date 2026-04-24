@@ -1,4 +1,5 @@
 import { Icon } from "@/components/ui/Icon";
+import { getLifeAreaOption } from "@/lib/lifeAreas";
 import {
   getDueDateLabel,
   isTaskOverdue,
@@ -24,6 +25,7 @@ export function TaskRow({
 }: TaskRowProps) {
   const overdue = isTaskOverdue(task, todayKey);
   const priority = priorityStyles[task.priority];
+  const lifeArea = getLifeAreaOption(task.category);
 
   return (
     <li
@@ -83,6 +85,9 @@ export function TaskRow({
             </span>
             <span className="inline-flex rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs font-semibold text-[var(--muted)]">
               {task.completed ? "Completed" : "Active"}
+            </span>
+            <span className="accent-badge inline-flex rounded-md px-2 py-1 text-xs font-semibold">
+              {lifeArea.emoji} {lifeArea.area}
             </span>
           </div>
         </div>

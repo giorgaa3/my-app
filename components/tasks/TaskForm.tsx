@@ -4,8 +4,9 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { lifeAreaOptions } from "@/lib/lifeAreas";
 import { taskPriorityOptions } from "@/lib/tasks";
-import type { Task, TaskInput, TaskPriority } from "@/lib/types";
+import type { LifeArea, Task, TaskInput, TaskPriority } from "@/lib/types";
 
 type TaskFormProps = {
   editingTask: Task | null;
@@ -24,6 +25,9 @@ export function TaskForm({
   const [priority, setPriority] = useState<TaskPriority>(
     editingTask?.priority ?? "medium",
   );
+  const [category, setCategory] = useState<LifeArea>(
+    editingTask?.category ?? "Work",
+  );
   const [dueDate, setDueDate] = useState(editingTask?.dueDate ?? "");
   const isEditing = Boolean(editingTask);
 
@@ -31,6 +35,7 @@ export function TaskForm({
     event.preventDefault();
 
     const taskInput: TaskInput = {
+      category,
       dueDate: dueDate || undefined,
       priority,
       title: title.trim(),
@@ -44,6 +49,7 @@ export function TaskForm({
 
     setTitle("");
     setPriority("medium");
+    setCategory("Work");
     setDueDate("");
   }
 
@@ -76,6 +82,23 @@ export function TaskForm({
           {taskPriorityOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1.5">
+        <span className="section-muted text-xs font-semibold uppercase">
+          Life area
+        </span>
+        <select
+          className="field-control rounded-lg px-3 text-sm"
+          onChange={(event) => setCategory(event.target.value as LifeArea)}
+          value={category}
+        >
+          {lifeAreaOptions.map((option) => (
+            <option key={option.area} value={option.area}>
+              {option.emoji} {option.area}
             </option>
           ))}
         </select>

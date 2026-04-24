@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PulseBoard | Task & Habit Tracker",
+  title: "LifeQuest | Productivity RPG Dashboard",
   description:
-    "A polished local-first dashboard for tracking tasks, habits, streaks, and daily progress.",
+    "A local-first productivity RPG for leveling up tasks, habits, focus, quests, and life areas.",
 };
 
 export default function RootLayout({

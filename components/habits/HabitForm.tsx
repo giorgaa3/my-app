@@ -5,7 +5,7 @@ import type { FormEvent } from "react";
 
 import { Icon } from "@/components/ui/Icon";
 import { habitCategoryOptions } from "@/lib/habits";
-import type { HabitInput } from "@/lib/types";
+import type { HabitInput, LifeArea } from "@/lib/types";
 
 type HabitFormProps = {
   onAddHabit: (habit: HabitInput) => void;
@@ -14,7 +14,7 @@ type HabitFormProps = {
 export function HabitForm({ onAddHabit }: HabitFormProps) {
   const [name, setName] = useState("");
   const [emoji, setEmoji] = useState<string>(habitCategoryOptions[0].icon);
-  const [category, setCategory] = useState<string>(
+  const [category, setCategory] = useState<LifeArea>(
     habitCategoryOptions[0].label,
   );
 
@@ -67,7 +67,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
         </span>
         <select
           className="field-control rounded-lg px-3 text-sm"
-          onChange={(event) => setCategory(event.target.value)}
+          onChange={(event) => setCategory(event.target.value as LifeArea)}
           value={category}
         >
           {habitCategoryOptions.map((option) => (

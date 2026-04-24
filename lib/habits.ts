@@ -5,25 +5,25 @@ import {
   getTodayKey,
   shiftDateKey,
 } from "@/lib/date";
-import type { Habit } from "@/lib/types";
+import {
+  getLifeAreaOption,
+  lifeAreaOptions,
+  normalizeLifeArea,
+} from "@/lib/lifeAreas";
+import type { Habit, LifeArea } from "@/lib/types";
 
-export const habitCategoryOptions = [
-  { icon: "🌿", label: "Wellness" },
-  { icon: "🎯", label: "Focus" },
-  { icon: "⚡", label: "Fitness" },
-  { icon: "📘", label: "Learning" },
-  { icon: "🏡", label: "Home" },
-] as const;
+export const habitCategoryOptions = lifeAreaOptions.map((option) => ({
+  icon: option.emoji,
+  label: option.area,
+}));
 
 type StoredHabit = Partial<Habit> & {
   id: string;
   name: string;
 };
 
-export function getHabitCategoryIcon(category: string) {
-  return (
-    habitCategoryOptions.find((option) => option.label === category)?.icon ?? "✨"
-  );
+export function getHabitCategoryIcon(category: LifeArea) {
+  return getLifeAreaOption(category).emoji;
 }
 
 export function normalizeHabits(value: unknown) {
@@ -41,7 +41,7 @@ export function normalizeHabits(value: unknown) {
       return Boolean(storedHabit.id && storedHabit.name);
     })
     .map((habit) => ({
-      category: habit.category || habitCategoryOptions[0].label,
+      category: normalizeLifeArea(habit.category),
       completedDates: dedupeDateKeys(habit.completedDates ?? []),
       createdAt: habit.createdAt ?? new Date().toISOString(),
       emoji: habit.emoji || habitCategoryOptions[0].icon,

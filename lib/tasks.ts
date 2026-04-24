@@ -1,4 +1,5 @@
 import { formatFriendlyDate, getTodayKey, isDateBefore } from "@/lib/date";
+import { normalizeLifeArea } from "@/lib/lifeAreas";
 import type { Task, TaskFilter, TaskPriority } from "@/lib/types";
 
 export const taskPriorityOptions: Array<{
@@ -58,6 +59,8 @@ export function normalizeTasks(value: unknown) {
     })
     .map((task) => ({
       completed: Boolean(task.completed),
+      category: normalizeLifeArea(task.category),
+      completedAt: task.completedAt || undefined,
       createdAt: task.createdAt ?? new Date().toISOString(),
       dueDate: task.dueDate || undefined,
       id: String(task.id),

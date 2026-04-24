@@ -1,18 +1,16 @@
-# PulseBoard
+# LifeQuest
 
-A small, polished Task & Habit Tracker dashboard built with Next.js App Router,
+A polished productivity RPG dashboard built with Next.js App Router,
 TypeScript, Tailwind CSS, React components, and localStorage persistence.
 
 ## Features
 
-- Dashboard welcome panel with task and habit progress
-- Statistics for total tasks, completed tasks, active habits, completion rate,
-  overdue tasks, and high-priority tasks
-- Add, edit, complete, uncomplete, filter, search, and delete tasks
-- Task priority, due dates, overdue state, and task summary counters
-- Add habits with an icon and category
-- Complete today, reset progress, track current and best streaks, and delete habits
-- Weekly habit progress view
+- XP, levels, level titles, avatar progression, coins, and daily streaks
+- Daily Quest Board with date-based quest progress and rewards
+- Tasks with edit, priority, due dates, search, filters, and life areas
+- Habits with emoji badges, life areas, streaks, reset, and weekly progress
+- Pomodoro-style Focus Arena with task selection and session rewards
+- Character card, achievements, reward shop previews, and life area progress
 - Light and dark mode saved locally
 - Toast notifications for feedback
 - Local-first persistence through `localStorage`
@@ -34,6 +32,13 @@ components/
     HabitForm.tsx
     HabitRow.tsx
     HabitSection.tsx
+  lifequest/
+    AchievementsPanel.tsx
+    CharacterCard.tsx
+    DailyQuestBoard.tsx
+    FocusArena.tsx
+    LifeAreasGrid.tsx
+    RewardShop.tsx
   tasks/
     TaskFilters.tsx
     TaskForm.tsx
@@ -54,6 +59,8 @@ lib/
   date.ts
   habits.ts
   id.ts
+  lifeAreas.ts
+  lifequest.ts
   tasks.ts
   types.ts
   utils.ts
