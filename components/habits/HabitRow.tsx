@@ -2,6 +2,7 @@ import { Icon } from "@/components/ui/Icon";
 import { calculateStreak, formatShortDate } from "@/lib/date";
 import {
   getBestStreak,
+  getHabitCategoryIcon,
   getWeeklyHabitProgress,
   isHabitCompletedToday,
 } from "@/lib/habits";
@@ -27,9 +28,10 @@ export function HabitRow({
   const currentStreak = calculateStreak(habit.completedDates, todayKey);
   const bestStreak = getBestStreak(habit.completedDates);
   const weeklyProgress = getWeeklyHabitProgress(habit, todayKey);
+  const categoryIcon = getHabitCategoryIcon(habit.category);
 
   return (
-    <li className="soft-card rounded-lg p-4">
+    <li className="soft-card rounded-lg p-4 transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="flex flex-col gap-4">
         <div className="flex items-start gap-3">
           <div className="dashboard-card flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-xl shadow-none">
@@ -41,8 +43,8 @@ export function HabitRow({
               <h3 className="section-title min-w-0 break-words text-sm font-semibold">
                 {habit.name}
               </h3>
-              <span className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-xs font-semibold text-[var(--muted)]">
-                {habit.category}
+              <span className="accent-badge rounded-md px-2 py-0.5 text-xs font-semibold">
+                {categoryIcon} {habit.category}
               </span>
             </div>
             <p className="section-muted mt-1 text-sm">
@@ -86,6 +88,12 @@ export function HabitRow({
             <p className="section-muted text-xs font-semibold">
               {weeklyProgress.completedCount}/7 days
             </p>
+          </div>
+          <div className="progress-track mb-3">
+            <div
+              className="progress-bar"
+              style={{ width: `${weeklyProgress.percentage}%` }}
+            />
           </div>
           <div className="grid grid-cols-7 gap-2">
             {weeklyProgress.weekKeys.map((dateKey) => {

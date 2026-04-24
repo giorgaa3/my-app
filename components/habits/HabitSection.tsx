@@ -28,17 +28,22 @@ export function HabitSection({
   return (
     <section className="dashboard-card overflow-hidden rounded-lg">
       <div className="border-b border-[var(--border)] px-5 py-5">
-        <div className="flex flex-col gap-2">
-          <p className="section-muted text-sm font-semibold uppercase">
-            Habits
-          </p>
-          <h2 className="section-title text-2xl font-semibold">
-            Keep the streak alive
-          </h2>
-          <p className="section-muted max-w-2xl text-sm leading-6">
-            Track small repeatable routines. The weekly grid makes consistency
-            visible without turning it into busywork.
-          </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-2">
+            <p className="section-muted text-sm font-semibold uppercase">
+              Habits
+            </p>
+            <h2 className="section-title text-2xl font-semibold">
+              Keep the streak alive
+            </h2>
+            <p className="section-muted max-w-2xl text-sm leading-6">
+              See today&apos;s check-ins, streaks, and weekly rhythm in one
+              calm view.
+            </p>
+          </div>
+          <div className="accent-badge inline-flex items-center gap-2 self-start rounded-md px-3 py-2 text-sm font-semibold">
+            {summary.completedToday}/{summary.total} today
+          </div>
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -66,7 +71,12 @@ export function HabitSection({
           </ul>
         ) : (
           <EmptyState
-            description="Create a habit with an emoji and category so the routine is easy to recognize later."
+            action={
+              <span className="accent-badge rounded-md px-3 py-2 text-sm font-semibold">
+                Add your first habit above
+              </span>
+            }
+            description="Choose a small routine, give it a category badge, and track it through the week."
             icon="flame"
             title="No habits yet"
           />
@@ -83,7 +93,7 @@ type HabitMetricProps = {
 
 function HabitMetric({ label, value }: HabitMetricProps) {
   return (
-    <div className="soft-card rounded-lg px-4 py-3">
+    <div className="soft-card rounded-lg px-4 py-3 transition hover:-translate-y-0.5">
       <p className="section-muted text-xs font-semibold uppercase">{label}</p>
       <p className="section-title mt-1 text-xl font-semibold">{value}</p>
     </div>

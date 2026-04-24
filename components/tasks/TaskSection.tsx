@@ -51,17 +51,22 @@ export function TaskSection({
   return (
     <section className="dashboard-card overflow-hidden rounded-lg">
       <div className="border-b border-[var(--border)] px-5 py-5">
-        <div className="flex flex-col gap-2">
-          <p className="section-muted text-sm font-semibold uppercase">
-            Tasks
-          </p>
-          <h2 className="section-title text-2xl font-semibold">
-            Plan the work, then clear it
-          </h2>
-          <p className="section-muted max-w-2xl text-sm leading-6">
-            Add due dates and priority so the next action is obvious. Overdue
-            and high-priority tasks stay easy to spot.
-          </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-2">
+            <p className="section-muted text-sm font-semibold uppercase">
+              Tasks
+            </p>
+            <h2 className="section-title text-2xl font-semibold">
+              Plan the work, then clear it
+            </h2>
+            <p className="section-muted max-w-2xl text-sm leading-6">
+              Sort by urgency, search quickly, and update tasks without leaving
+              the dashboard.
+            </p>
+          </div>
+          <div className="accent-badge inline-flex items-center gap-2 self-start rounded-md px-3 py-2 text-sm font-semibold">
+            {tasks.length} total
+          </div>
         </div>
 
         <TaskSummary tasks={tasks} todayKey={todayKey} />
@@ -101,10 +106,17 @@ export function TaskSection({
             </ul>
           ) : (
             <EmptyState
+              action={
+                !searchQuery.trim() ? (
+                  <span className="accent-badge rounded-md px-3 py-2 text-sm font-semibold">
+                    Add your first task above
+                  </span>
+                ) : undefined
+              }
               description={
                 searchQuery.trim()
                   ? "Try a different search term or clear the search field."
-                  : "Add a task with a priority and due date to get a clearer plan."
+                  : "Create one focused task, choose a priority, and the dashboard will start filling in."
               }
               icon={searchQuery.trim() ? "search" : "list"}
               title={searchQuery.trim() ? "No matching tasks" : "No tasks yet"}

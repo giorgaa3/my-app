@@ -4,35 +4,39 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { habitCategoryOptions } from "@/lib/habits";
 import type { HabitInput } from "@/lib/types";
 
 type HabitFormProps = {
   onAddHabit: (habit: HabitInput) => void;
 };
 
-const categoryOptions = ["Wellness", "Focus", "Fitness", "Learning", "Home"];
-
 export function HabitForm({ onAddHabit }: HabitFormProps) {
   const [name, setName] = useState("");
-  const [emoji, setEmoji] = useState("*");
-  const [category, setCategory] = useState(categoryOptions[0]);
+  const [emoji, setEmoji] = useState<string>(habitCategoryOptions[0].icon);
+  const [category, setCategory] = useState<string>(
+    habitCategoryOptions[0].label,
+  );
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     onAddHabit({
       category,
-      emoji: emoji.trim() || "*",
+      emoji: emoji.trim() || habitCategoryOptions[0].icon,
       name: name.trim(),
     });
 
     setName("");
-    setEmoji("*");
-    setCategory(categoryOptions[0]);
+    setEmoji(habitCategoryOptions[0].icon);
+    setCategory(habitCategoryOptions[0].label);
   }
 
   return (
-    <form className="mt-5 grid gap-3 lg:grid-cols-[76px_1fr_150px_auto]" onSubmit={handleSubmit}>
+    <form
+      className="mt-5 grid gap-3 lg:grid-cols-[76px_1fr_150px_auto]"
+      onSubmit={handleSubmit}
+    >
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
           Icon
@@ -66,9 +70,9 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
           onChange={(event) => setCategory(event.target.value)}
           value={category}
         >
-          {categoryOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
+          {habitCategoryOptions.map((option) => (
+            <option key={option.label} value={option.label}>
+              {option.icon} {option.label}
             </option>
           ))}
         </select>
@@ -76,7 +80,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
 
       <div className="flex items-end">
         <button
-          className="accent-button inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-100 disabled:translate-y-0 disabled:opacity-45 lg:w-auto"
+          className="accent-button inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-100 disabled:translate-y-0 disabled:opacity-45 lg:w-auto"
           disabled={!name.trim()}
           type="submit"
         >

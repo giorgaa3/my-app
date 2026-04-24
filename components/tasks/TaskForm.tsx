@@ -48,7 +48,10 @@ export function TaskForm({
   }
 
   return (
-    <form className="mt-5 grid gap-3 lg:grid-cols-[1fr_150px_160px_auto]" onSubmit={handleSubmit}>
+    <form
+      className="mt-5 grid gap-3 lg:grid-cols-[1fr_150px_160px_auto]"
+      onSubmit={handleSubmit}
+    >
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
           Task title
@@ -92,12 +95,12 @@ export function TaskForm({
 
       <div className="flex items-end gap-2">
         <button
-          className="primary-button inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-slate-200 disabled:translate-y-0 disabled:opacity-45 lg:flex-none"
+          className="primary-button inline-flex min-h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-slate-200 disabled:translate-y-0 disabled:opacity-45 lg:flex-none"
           disabled={!title.trim()}
           type="submit"
         >
           <Icon name={isEditing ? "save" : "plus"} className="h-4 w-4" />
-          {isEditing ? "Save" : "Add"}
+          {isEditing ? "Save task" : "Add task"}
         </button>
         {isEditing ? (
           <button

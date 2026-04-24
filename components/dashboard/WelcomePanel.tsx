@@ -17,21 +17,25 @@ export function WelcomePanel({
   totalHabits,
 }: WelcomePanelProps) {
   const progressDegrees = stats.completionPercentage * 3.6;
+  const habitProgress =
+    totalHabits === 0
+      ? 0
+      : Math.round((completedHabitsToday / totalHabits) * 100);
 
   return (
-    <section className="dashboard-card rounded-lg p-5 sm:p-6">
+    <section className="dashboard-card hero-panel overflow-hidden rounded-lg p-5 sm:p-6">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-center">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-md border border-teal-200 bg-teal-50 px-3 py-1.5 text-sm font-semibold text-teal-700">
+          <div className="accent-badge inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-semibold">
             <Icon name="spark" className="h-4 w-4" />
-            Today&apos;s command center
+            Today&apos;s focus
           </div>
           <h1 className="section-title mt-5 text-3xl font-semibold sm:text-4xl">
-            Build momentum without losing the details.
+            A calmer way to see what matters next.
           </h1>
           <p className="section-muted mt-3 max-w-2xl text-base leading-7">
-            Tasks show what needs action next. Habits show the routines worth
-            protecting. Everything saves in your browser automatically.
+            Start with one visible task, keep routines moving, and let the
+            dashboard show progress at a glance.
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -58,16 +62,51 @@ export function WelcomePanel({
               </p>
             </div>
           </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <div className="soft-card rounded-lg px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="section-muted text-sm font-medium">
+                  Task completion
+                </p>
+                <p className="section-title text-sm font-semibold">
+                  {stats.completionPercentage}%
+                </p>
+              </div>
+              <div className="progress-track mt-3">
+                <div
+                  className="progress-bar"
+                  style={{ width: `${stats.completionPercentage}%` }}
+                />
+              </div>
+            </div>
+            <div className="soft-card rounded-lg px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="section-muted text-sm font-medium">
+                  Habit check-ins
+                </p>
+                <p className="section-title text-sm font-semibold">
+                  {habitProgress}%
+                </p>
+              </div>
+              <div className="progress-track mt-3">
+                <div
+                  className="progress-bar"
+                  style={{ width: `${habitProgress}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-center lg:justify-end">
           <div
-            className="relative flex h-40 w-40 items-center justify-center rounded-full"
+            className="relative flex h-44 w-44 items-center justify-center rounded-full shadow-[0_18px_45px_rgb(20_184_166/0.18)]"
             style={{
-              background: `conic-gradient(#14b8a6 ${progressDegrees}deg, #e2e8f0 0deg)`,
+              background: `conic-gradient(#14b8a6 ${progressDegrees}deg, color-mix(in srgb, var(--muted) 16%, transparent) 0deg)`,
             }}
           >
-            <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full bg-[var(--surface)] text-center shadow-inner">
+            <div className="flex h-36 w-36 flex-col items-center justify-center rounded-full bg-[var(--surface)] text-center shadow-inner">
               <span className="section-title text-4xl font-semibold">
                 {stats.completionPercentage}%
               </span>
