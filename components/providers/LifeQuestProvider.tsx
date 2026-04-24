@@ -15,6 +15,12 @@ import { useLanguage } from "@/hooks/use-language";
 import { useLocalStorageState } from "@/hooks/useLocalStorage";
 import { useTheme } from "@/hooks/useTheme";
 import { useToast } from "@/hooks/useToast";
+import {
+  buyAvatarItem as buyAvatarItemHelper,
+  equipAvatarItem as equipAvatarItemHelper,
+  initialUserAvatar,
+  normalizeUserAvatar,
+} from "@/lib/avatar";
 import { getTodayKey } from "@/lib/date";
 import { getHabitDashboardSummary, normalizeHabits } from "@/lib/habits";
 import { getAchievementTitleKey, getLevelTitleKey } from "@/lib/i18n";
@@ -34,6 +40,7 @@ import {
 import { getTaskSummary, normalizeTasks } from "@/lib/tasks";
 import type {
   DashboardStats,
+  AvatarItem,
   Habit,
   HabitInput,
   LevelUpDetails,
@@ -42,20 +49,25 @@ import type {
   TaskFilter,
   TaskInput,
   ThemeMode,
+  UserAvatar,
 } from "@/lib/types";
 
 const TASK_STORAGE_KEY = "pulseboard:tasks";
 const HABIT_STORAGE_KEY = "pulseboard:habits";
 const LIFEQUEST_PROFILE_STORAGE_KEY = "lifequest:profile";
+const AVATAR_STORAGE_KEY = "lifequest:avatar";
 const INITIAL_TASKS: Task[] = [];
 const INITIAL_HABITS: Habit[] = [];
 
 type LifeQuestContextValue = {
   addHabit: (habit: HabitInput) => void;
   addTask: (task: TaskInput) => void;
+  avatar: UserAvatar;
+  buyAvatarItem: (item: AvatarItem) => void;
   completeFocusSession: () => void;
   deleteHabit: (habitId: string) => void;
   deleteTask: (taskId: string) => void;
+  equipAvatarItem: (item: AvatarItem) => void;
   habitSummary: ReturnType<typeof getHabitDashboardSummary>;
   habits: Habit[];
   isStorageReady: boolean;
@@ -97,6 +109,10 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       LIFEQUEST_PROFILE_STORAGE_KEY,
       initialLifeQuestProfile,
     );
+  const [storedAvatar, setAvatar] = useLocalStorageState<UserAvatar>(
+    AVATAR_STORAGE_KEY,
+    initialUserAvatar,
+  );
   const { theme, toggleTheme } = useTheme();
   const { dismissToast, showToast, toasts } = useToast();
   const { t } = useLanguage();
@@ -107,6 +123,10 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
   const profile = useMemo(
     () => normalizeLifeQuestProfile(storedProfile),
     [storedProfile],
+  );
+  const avatar = useMemo(
+    () => normalizeUserAvatar(storedAvatar),
+    [storedAvatar],
   );
   const taskSummary = useMemo(
     () => getTaskSummary(tasks, todayKey),
@@ -429,13 +449,75 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
     showToast(t("toast.focusComplete", { xp: FOCUS_REWARD.xp }), "success");
   }, [habits, persistProfile, profile, showToast, t, tasks, todayKey]);
 
+  const buyAvatarItem = useCallback(
+    (item: AvatarItem) => {
+      const levelInfo = getLevelInfo(profile.xp);
+      const purchase = buyAvatarItemHelper(
+        profile.coins,
+        levelInfo.level,
+        item,
+        avatar,
+      );
+
+      if (!purchase.ok) {
+        if (purchase.reason === "locked") {
+          showToast(
+            t("toast.avatarLocked", {
+              level: item.requiredLevel ?? 1,
+            }),
+            "error",
+          );
+          return;
+        }
+
+        if (purchase.reason === "not-enough-coins") {
+          showToast(
+            t("toast.avatarNotEnoughCoins", {
+              coins: profile.coins,
+              price: item.price,
+            }),
+            "error",
+          );
+          return;
+        }
+
+        showToast(t("toast.avatarAlreadyOwned"), "info");
+        return;
+      }
+
+      setProfile({
+        ...profile,
+        coins: purchase.coins,
+      });
+      setAvatar(purchase.avatar);
+      showToast(t("toast.avatarPurchased"), "success");
+    },
+    [avatar, profile, setAvatar, setProfile, showToast, t],
+  );
+
+  const equipAvatarItem = useCallback(
+    (item: AvatarItem) => {
+      if (!avatar.ownedItemIds.includes(item.id)) {
+        showToast(t("toast.avatarEquipLocked"), "error");
+        return;
+      }
+
+      setAvatar(equipAvatarItemHelper(avatar, item));
+      showToast(t("toast.avatarEquipped"), "success");
+    },
+    [avatar, setAvatar, showToast, t],
+  );
+
   const contextValue = useMemo<LifeQuestContextValue>(
     () => ({
       addHabit,
       addTask,
+      avatar,
+      buyAvatarItem,
       completeFocusSession,
       deleteHabit,
       deleteTask,
+      equipAvatarItem,
       habitSummary,
       habits,
       isStorageReady: tasksReady && habitsReady,
@@ -456,9 +538,12 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
     [
       addHabit,
       addTask,
+      avatar,
+      buyAvatarItem,
       completeFocusSession,
       deleteHabit,
       deleteTask,
+      equipAvatarItem,
       habitSummary,
       habits,
       habitsReady,

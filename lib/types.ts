@@ -39,6 +39,32 @@ export type ThemeMode = "light" | "dark";
 
 export type ToastTone = "success" | "error" | "info";
 
+export type AvatarItemCategory =
+  | "hair"
+  | "outfit"
+  | "accessory"
+  | "background"
+  | "frame"
+  | "theme";
+
+export type AvatarRarity = "common" | "rare" | "epic" | "legendary";
+
+export type AvatarItem = {
+  id: string;
+  name: string;
+  description: string;
+  category: AvatarItemCategory;
+  price: number;
+  preview: string;
+  rarity: AvatarRarity;
+  requiredLevel?: number;
+};
+
+export type UserAvatar = {
+  ownedItemIds: string[];
+  equipped: Partial<Record<AvatarItemCategory, string>>;
+};
+
 export type ToastMessage = {
   id: string;
   message: string;

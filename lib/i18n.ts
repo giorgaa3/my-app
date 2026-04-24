@@ -1,4 +1,10 @@
-import type { LifeArea, TaskFilter, TaskPriority } from "@/lib/types";
+import type {
+  AvatarItemCategory,
+  AvatarRarity,
+  LifeArea,
+  TaskFilter,
+  TaskPriority,
+} from "@/lib/types";
 
 export type Language = "en" | "ka";
 
@@ -39,6 +45,58 @@ export const translations = {
     "aria.markTaskActive": "Mark task active",
     "aria.markTaskComplete": "Mark task complete",
     "aria.resetHabit": "Reset {name}",
+    "avatar.category.accessory": "Accessories",
+    "avatar.category.background": "Backgrounds",
+    "avatar.category.frame": "Frames",
+    "avatar.category.hair": "Hair",
+    "avatar.category.outfit": "Outfits",
+    "avatar.category.theme": "Themes",
+    "avatar.equippedLoadout": "Equipped loadout",
+    "avatar.previewDescription":
+      "Your equipped cosmetics update instantly across the shop and profile.",
+    "avatar.previewTitle": "Character preview",
+    "avatar.slotEmpty": "Empty slot",
+    "avatarItem.calm-growth-theme.description":
+      "A soft green theme that rewards early consistency.",
+    "avatarItem.calm-growth-theme.name": "Calm Growth Theme",
+    "avatarItem.classic-cap.description":
+      "A clean starter cap for daily momentum.",
+    "avatarItem.classic-cap.name": "Classic Cap",
+    "avatarItem.crown.description": "A crown for users who keep showing up.",
+    "avatarItem.crown.name": "Crown",
+    "avatarItem.cyber-hair.description":
+      "A sharp neon style for focused builders.",
+    "avatarItem.cyber-hair.name": "Cyber Hair",
+    "avatarItem.developer-hoodie.description":
+      "Comfortable gear for coding, studying, and shipping.",
+    "avatarItem.developer-hoodie.name": "Developer Hoodie",
+    "avatarItem.focus-armor.description":
+      "A polished armor set for deep work sessions.",
+    "avatarItem.focus-armor.name": "Focus Armor",
+    "avatarItem.glass-frame.description":
+      "A cool glass frame for a clean productivity look.",
+    "avatarItem.glass-frame.name": "Glass Frame",
+    "avatarItem.golden-frame.description":
+      "A warm frame that makes the profile feel premium.",
+    "avatarItem.golden-frame.name": "Golden Frame",
+    "avatarItem.headphones.description":
+      "A quiet signal that you are in focus mode.",
+    "avatarItem.headphones.name": "Headphones",
+    "avatarItem.morning-field-background.description":
+      "A calm sunrise field for steady morning progress.",
+    "avatarItem.morning-field-background.name": "Morning Field Background",
+    "avatarItem.night-city-background.description":
+      "A moody city glow behind your character.",
+    "avatarItem.night-city-background.name": "Night City Background",
+    "avatarItem.royal-productivity-theme.description":
+      "A royal glow for the most dedicated LifeQuest profiles.",
+    "avatarItem.royal-productivity-theme.name": "Royal Productivity Theme",
+    "avatarItem.shadow-shades.description":
+      "A confident accessory for bright dashboard days.",
+    "avatarItem.shadow-shades.name": "Shadow Shades",
+    "avatarItem.space-suit.description":
+      "A premium suit for high-orbit productivity days.",
+    "avatarItem.space-suit.name": "Space Suit",
     "common.active": "Active",
     "common.actions": "actions",
     "common.addHabit": "Add habit",
@@ -203,6 +261,8 @@ export const translations = {
     "nav.profile.label": "Profile",
     "nav.quests.description": "Today's rewards",
     "nav.quests.label": "Quests",
+    "nav.shop.description": "Avatar upgrades",
+    "nav.shop.label": "Shop",
     "nav.tasks.description": "Plan and finish work",
     "nav.tasks.label": "Tasks",
     "preview.openQuests": "Open quests",
@@ -215,6 +275,9 @@ export const translations = {
     "profile.characterCard.description":
       "Real-life progress, converted into XP, coins, and momentum.",
     "profile.characterCard.eyebrow": "LifeQuest Character",
+    "profile.customizeDescription":
+      "Spend coins on cosmetics, equip one item per category, and make your character feel earned.",
+    "profile.customizeTitle": "Customize Avatar",
     "profile.description":
       "Your character card, XP progress, coins, streak, and the main stats that describe your current LifeQuest build.",
     "profile.eyebrow": "Profile / Character",
@@ -222,6 +285,10 @@ export const translations = {
     "profile.habitCheckIns": "Habit check-ins",
     "profile.mainStats": "Main stats",
     "profile.nextLevel": "Next level",
+    "profile.noOwnedItems":
+      "No cosmetics owned yet. Complete quests, earn coins, then visit the shop.",
+    "profile.openShop": "Open Shop",
+    "profile.ownedItems": "Owned items",
     "profile.progressSnapshot": "Progress snapshot",
     "profile.streak": "Streak",
     "profile.tasksCompleted": "Tasks completed",
@@ -258,6 +325,30 @@ export const translations = {
     "reward.shop.title": "Cosmetic unlocks",
     "reward.verdant-frame.description": "A calm green profile frame for early momentum.",
     "reward.verdant-frame.title": "Verdant Frame",
+    "shop.allItems": "All cosmetics",
+    "shop.buy": "Buy",
+    "shop.categoryCount": "{count} items",
+    "shop.coinBalance": "Coin balance",
+    "shop.completion": "Avatar completion",
+    "shop.currentLevel": "Current level",
+    "shop.description":
+      "Use coins earned from tasks, habits, focus sessions, and quests to unlock cosmetic upgrades for your LifeQuest character.",
+    "shop.equip": "Equip",
+    "shop.equipped": "Equipped",
+    "shop.eyebrow": "Avatar Shop",
+    "shop.locked": "Locked",
+    "shop.notEnoughCoins": "Not enough coins",
+    "shop.owned": "Owned",
+    "shop.ownedItems": "Owned items",
+    "shop.previewHelper":
+      "Buy cosmetics, equip one item per category, and watch your profile character evolve.",
+    "shop.price": "{price} coins",
+    "shop.requiredLevel": "Requires level {level}",
+    "shop.rarity.common": "Common",
+    "shop.rarity.epic": "Epic",
+    "shop.rarity.legendary": "Legendary",
+    "shop.rarity.rare": "Rare",
+    "shop.title": "Spend coins on your character",
     "stat.activeHabits.detail": "Routines available to check off today.",
     "stat.activeHabits.label": "Active habits",
     "stat.completedTasks.detail": "Tasks moved across the finish line.",
@@ -303,6 +394,13 @@ export const translations = {
     "theme.switchLight": "Switch to light mode",
     "toast.addHabitName": "Add a habit name first.",
     "toast.addTaskTitle": "Add a task title first.",
+    "toast.avatarAlreadyOwned": "You already own that cosmetic.",
+    "toast.avatarEquipLocked": "Buy this cosmetic before equipping it.",
+    "toast.avatarEquipped": "Avatar cosmetic equipped.",
+    "toast.avatarLocked": "This cosmetic unlocks at level {level}.",
+    "toast.avatarNotEnoughCoins":
+      "Not enough coins yet. You have {coins}, but this costs {price}.",
+    "toast.avatarPurchased": "Cosmetic purchased and added to your avatar.",
     "toast.duplicateHabit": "That habit already exists.",
     "toast.focusComplete": "Focus session complete: +{xp} XP",
     "toast.habitAdded": "Habit added to your training plan.",
@@ -351,6 +449,58 @@ export const translations = {
     "aria.markTaskActive": "დავალების აქტიურად დაბრუნება",
     "aria.markTaskComplete": "დავალების შესრულებულად მონიშვნა",
     "aria.resetHabit": "{name}-ის განულება",
+    "avatar.category.accessory": "აქსესუარები",
+    "avatar.category.background": "ფონები",
+    "avatar.category.frame": "ჩარჩოები",
+    "avatar.category.hair": "თმა",
+    "avatar.category.outfit": "სამოსი",
+    "avatar.category.theme": "თემები",
+    "avatar.equippedLoadout": "აქტიური იერსახე",
+    "avatar.previewDescription":
+      "არჩეული კოსმეტიკა მაშინვე ჩანს მაღაზიაშიც და პროფილშიც.",
+    "avatar.previewTitle": "პერსონაჟის ნახვა",
+    "avatar.slotEmpty": "ცარიელი ადგილი",
+    "avatarItem.calm-growth-theme.description":
+      "რბილი მწვანე თემა საწყისი სტაბილურობისთვის.",
+    "avatarItem.calm-growth-theme.name": "მშვიდი ზრდის თემა",
+    "avatarItem.classic-cap.description":
+      "სუფთა საწყისი კეპი ყოველდღიური ტემპისთვის.",
+    "avatarItem.classic-cap.name": "კლასიკური კეპი",
+    "avatarItem.crown.description": "გვირგვინი მათთვის, ვინც არ ჩერდება.",
+    "avatarItem.crown.name": "გვირგვინი",
+    "avatarItem.cyber-hair.description":
+      "მკვეთრი ნეონური სტილი ფოკუსირებული შემქმნელებისთვის.",
+    "avatarItem.cyber-hair.name": "კიბერ თმა",
+    "avatarItem.developer-hoodie.description":
+      "კომფორტული ჰუდი კოდისთვის, სწავლისთვის და საქმის დასრულებისთვის.",
+    "avatarItem.developer-hoodie.name": "დეველოპერის ჰუდი",
+    "avatarItem.focus-armor.description":
+      "გაპრიალებული აბჯარი ღრმა მუშაობის სესიებისთვის.",
+    "avatarItem.focus-armor.name": "ფოკუსის აბჯარი",
+    "avatarItem.glass-frame.description":
+      "ცივი მინის ჩარჩო სუფთა პროდუქტიული იერისთვის.",
+    "avatarItem.glass-frame.name": "მინის ჩარჩო",
+    "avatarItem.golden-frame.description":
+      "თბილი ჩარჩო, რომელიც პროფილს პრემიუმ იერს აძლევს.",
+    "avatarItem.golden-frame.name": "ოქროს ჩარჩო",
+    "avatarItem.headphones.description":
+      "მშვიდი ნიშანი, რომ ფოკუსის რეჟიმში ხარ.",
+    "avatarItem.headphones.name": "ყურსასმენები",
+    "avatarItem.morning-field-background.description":
+      "მშვიდი მზისამოსვლის ფონი სტაბილური დილის პროგრესისთვის.",
+    "avatarItem.morning-field-background.name": "დილის ველის ფონი",
+    "avatarItem.night-city-background.description":
+      "ღამის ქალაქის რბილი ნათება შენი პერსონაჟის უკან.",
+    "avatarItem.night-city-background.name": "ღამის ქალაქის ფონი",
+    "avatarItem.royal-productivity-theme.description":
+      "სამეფო ნათება ყველაზე ერთგული LifeQuest პროფილებისთვის.",
+    "avatarItem.royal-productivity-theme.name": "სამეფო პროდუქტიულობის თემა",
+    "avatarItem.shadow-shades.description":
+      "თავდაჯერებული აქსესუარი ნათელი სამუშაო დღეებისთვის.",
+    "avatarItem.shadow-shades.name": "ჩრდილის სათვალე",
+    "avatarItem.space-suit.description":
+      "პრემიუმ კოსტიუმი მაღალი პროდუქტიულობის დღეებისთვის.",
+    "avatarItem.space-suit.name": "კოსმოსური კოსტიუმი",
     "common.active": "აქტიური",
     "common.actions": "ქმედება",
     "common.addHabit": "ჩვევის დამატება",
