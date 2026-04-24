@@ -49,7 +49,7 @@ export function TaskSection({
   }
 
   return (
-    <section className="dashboard-card overflow-hidden rounded-lg">
+    <section className="dashboard-card overflow-hidden rounded-2xl">
       <div className="border-b border-[var(--border)] px-5 py-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-2">
@@ -92,7 +92,7 @@ export function TaskSection({
 
         <div className="mt-4">
           {filteredTasks.length > 0 ? (
-            <ul className="overflow-hidden rounded-lg border border-[var(--border)]">
+            <ul className="overflow-hidden rounded-2xl border border-[var(--border)]">
               {filteredTasks.map((task) => (
                 <TaskRow
                   key={task.id}

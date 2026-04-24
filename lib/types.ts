@@ -133,3 +133,14 @@ export type LifeAreaProgress = {
   progress: number;
   total: number;
 };
+
+export type LevelUpDetails = {
+  avatar: string;
+  level: number;
+  title: string;
+  xp: number;
+  xpGained: number;
+  coinsGained: number;
+  totalCoins: number;
+  achievements: string[];
+};

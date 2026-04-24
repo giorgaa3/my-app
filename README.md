@@ -7,6 +7,8 @@ TypeScript, Tailwind CSS, React components, and localStorage persistence.
 
 - XP, levels, level titles, avatar progression, coins, and daily streaks
 - Daily Quest Board with date-based quest progress and rewards
+- Multi-page dashboard: `/`, `/tasks`, `/habits`, `/focus`, `/quests`, `/achievements`, `/profile`
+- Premium level-up modal when XP reaches a new level
 - Tasks with edit, priority, due dates, search, filters, and life areas
 - Habits with emoji badges, life areas, streaks, reset, and weekly progress
 - Pomodoro-style Focus Arena with task selection and session rewards
@@ -23,11 +25,20 @@ app/
   globals.css
   layout.tsx
   page.tsx
+  achievements/page.tsx
+  focus/page.tsx
+  habits/page.tsx
+  profile/page.tsx
+  quests/page.tsx
+  tasks/page.tsx
 components/
   dashboard/
     Dashboard.tsx
     StatsGrid.tsx
     WelcomePanel.tsx
+  layout/
+    AppShell.tsx
+    PageHeader.tsx
   habits/
     HabitForm.tsx
     HabitRow.tsx
@@ -37,8 +48,19 @@ components/
     CharacterCard.tsx
     DailyQuestBoard.tsx
     FocusArena.tsx
+    LevelUpModal.tsx
     LifeAreasGrid.tsx
     RewardShop.tsx
+  pages/
+    AchievementsPage.tsx
+    DashboardPage.tsx
+    FocusPage.tsx
+    HabitsPage.tsx
+    ProfilePage.tsx
+    QuestsPage.tsx
+    TasksPage.tsx
+  providers/
+    LifeQuestProvider.tsx
   tasks/
     TaskFilters.tsx
     TaskForm.tsx

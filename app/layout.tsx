@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { AppShell } from "@/components/layout/AppShell";
+import { LifeQuestProvider } from "@/components/providers/LifeQuestProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +20,9 @@ export default function RootLayout({
         className="min-h-full bg-background text-foreground"
         suppressHydrationWarning
       >
-        {children}
+        <LifeQuestProvider>
+          <AppShell>{children}</AppShell>
+        </LifeQuestProvider>
       </body>
     </html>
   );
