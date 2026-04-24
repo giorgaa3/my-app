@@ -7,10 +7,24 @@ import {
 } from "@/lib/date";
 import type { Habit } from "@/lib/types";
 
+export const habitCategoryOptions = [
+  { icon: "🌿", label: "Wellness" },
+  { icon: "🎯", label: "Focus" },
+  { icon: "⚡", label: "Fitness" },
+  { icon: "📘", label: "Learning" },
+  { icon: "🏡", label: "Home" },
+] as const;
+
 type StoredHabit = Partial<Habit> & {
   id: string;
   name: string;
 };
+
+export function getHabitCategoryIcon(category: string) {
+  return (
+    habitCategoryOptions.find((option) => option.label === category)?.icon ?? "✨"
+  );
+}
 
 export function normalizeHabits(value: unknown) {
   if (!Array.isArray(value)) {
@@ -27,10 +41,10 @@ export function normalizeHabits(value: unknown) {
       return Boolean(storedHabit.id && storedHabit.name);
     })
     .map((habit) => ({
-      category: habit.category || "Wellness",
+      category: habit.category || habitCategoryOptions[0].label,
       completedDates: dedupeDateKeys(habit.completedDates ?? []),
       createdAt: habit.createdAt ?? new Date().toISOString(),
-      emoji: habit.emoji || "*",
+      emoji: habit.emoji || habitCategoryOptions[0].icon,
       id: String(habit.id),
       name: String(habit.name),
     }));
