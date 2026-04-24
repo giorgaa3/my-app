@@ -8,12 +8,12 @@ export function getTodayKey(date = new Date()) {
   ].join("-");
 }
 
-function parseDateKey(dateKey: string) {
+export function parseDateKey(dateKey: string) {
   const [year, month, day] = dateKey.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
 
-function shiftDateKey(dateKey: string, offset: number) {
+export function shiftDateKey(dateKey: string, offset: number) {
   const date = parseDateKey(dateKey);
   return getTodayKey(new Date(date.getTime() + offset * DAY_IN_MS));
 }
@@ -46,4 +46,23 @@ export function formatShortDate(dateKey: string) {
   return new Intl.DateTimeFormat("en", {
     weekday: "short",
   }).format(parseDateKey(dateKey));
+}
+
+export function formatFriendlyDate(dateKey?: string) {
+  if (!dateKey) {
+    return "No due date";
+  }
+
+  return new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+  }).format(parseDateKey(dateKey));
+}
+
+export function isDateBefore(dateKey: string, compareTo = getTodayKey()) {
+  return dateKey < compareTo;
+}
+
+export function dedupeDateKeys(dateKeys: string[]) {
+  return Array.from(new Set(dateKeys)).sort();
 }
