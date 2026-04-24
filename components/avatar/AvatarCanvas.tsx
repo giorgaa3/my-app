@@ -5,14 +5,18 @@ import { AccessoryLayer } from "@/components/avatar/layers/AccessoryLayer";
 import { BaseCharacterLayer } from "@/components/avatar/layers/BaseCharacterLayer";
 import { FaceLayer } from "@/components/avatar/layers/FaceLayer";
 import { HairLayer } from "@/components/avatar/layers/HairLayer";
-import { OutfitLayer } from "@/components/avatar/layers/OutfitLayer";
+import { PantsLayer } from "@/components/avatar/layers/PantsLayer";
+import { ShoesLayer } from "@/components/avatar/layers/ShoesLayer";
+import { TopLayer } from "@/components/avatar/layers/TopLayer";
 import { avatarItems } from "@/data/avatar-items";
 import { getEquippedItems } from "@/lib/avatar";
 import {
   getAccessoryVariant,
   getAvatarCanvasStyle,
   getHairVariant,
-  getOutfitVariant,
+  getPantsVariant,
+  getShoesVariant,
+  getTopVariant,
 } from "@/lib/avatar-renderer";
 import type { UserAvatar } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -24,15 +28,15 @@ type AvatarCanvasProps = {
 };
 
 const canvasSizeClasses = {
-  lg: "min-h-[320px] rounded-2xl p-6",
-  md: "min-h-[250px] rounded-2xl p-5",
-  sm: "h-24 w-24 rounded-2xl p-2",
+  lg: "min-h-[430px] rounded-2xl p-6",
+  md: "min-h-[340px] rounded-2xl p-5",
+  sm: "h-36 w-28 rounded-2xl p-2",
 } as const;
 
 const figureSizeClasses = {
-  lg: "w-[230px]",
-  md: "w-[190px]",
-  sm: "w-[78px]",
+  lg: "w-[260px]",
+  md: "w-[210px]",
+  sm: "w-[88px]",
 } as const;
 
 export function AvatarCanvas({
@@ -43,7 +47,9 @@ export function AvatarCanvas({
   const equippedItems = getEquippedItems(avatar, avatarItems);
   const canvasStyle = getAvatarCanvasStyle(equippedItems);
   const hairVariant = getHairVariant(equippedItems.hair?.id);
-  const outfitVariant = getOutfitVariant(equippedItems.outfit?.id);
+  const topVariant = getTopVariant(equippedItems.top?.id);
+  const pantsVariant = getPantsVariant(equippedItems.pants?.id);
+  const shoesVariant = getShoesVariant(equippedItems.shoes?.id);
   const accessoryVariant = getAccessoryVariant(equippedItems.accessory?.id);
 
   return (
@@ -64,22 +70,28 @@ export function AvatarCanvas({
       <div className="relative flex min-h-full w-full items-end justify-center">
         <div
           aria-label="Layered LifeQuest avatar"
-          className={cn("relative aspect-[6/7]", figureSizeClasses[size])}
+          className={cn("relative aspect-[2/3]", figureSizeClasses[size])}
           role="img"
         >
-          <AvatarLayer className="z-10" key={`outfit-${outfitVariant}`}>
-            <OutfitLayer variant={outfitVariant} />
-          </AvatarLayer>
-          <AvatarLayer className="z-20" key="base-character">
+          <AvatarLayer className="z-10" key="base-character">
             <BaseCharacterLayer />
           </AvatarLayer>
-          <AvatarLayer className="z-[25]" key="face">
+          <AvatarLayer className="z-20" key={`pants-${pantsVariant}`}>
+            <PantsLayer variant={pantsVariant} />
+          </AvatarLayer>
+          <AvatarLayer className="z-30" key={`shoes-${shoesVariant}`}>
+            <ShoesLayer variant={shoesVariant} />
+          </AvatarLayer>
+          <AvatarLayer className="z-40" key={`top-${topVariant}`}>
+            <TopLayer variant={topVariant} />
+          </AvatarLayer>
+          <AvatarLayer className="z-50" key="face">
             <FaceLayer />
           </AvatarLayer>
-          <AvatarLayer className="z-30" key={`hair-${hairVariant}`}>
+          <AvatarLayer className="z-[60]" key={`hair-${hairVariant}`}>
             <HairLayer variant={hairVariant} />
           </AvatarLayer>
-          <AvatarLayer className="z-40" key={`accessory-${accessoryVariant}`}>
+          <AvatarLayer className="z-[70]" key={`accessory-${accessoryVariant}`}>
             <AccessoryLayer variant={accessoryVariant} />
           </AvatarLayer>
         </div>
