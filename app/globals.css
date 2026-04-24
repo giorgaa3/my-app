@@ -207,4 +207,15 @@ button:disabled {
       linear-gradient(135deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-muted) 92%, transparent)),
       radial-gradient(circle at top right, color-mix(in srgb, var(--accent-purple) 16%, transparent), transparent 20rem);
   }
+
+  .brand-mark {
+    background: linear-gradient(
+      135deg,
+      var(--accent-blue),
+      var(--accent-purple),
+      var(--brand)
+    );
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--accent-blue) 24%, transparent);
+    color: #ffffff;
+  }
 }

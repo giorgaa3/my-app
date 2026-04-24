@@ -247,9 +247,9 @@ export default function Dashboard() {
     <main className="app-shell min-h-screen px-4 py-5 sm:px-6 lg:px-8">
       <ToastViewport onDismiss={dismissToast} toasts={toasts} />
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <header className="dashboard-card flex flex-col gap-4 rounded-lg px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <header className="dashboard-card flex flex-col gap-4 rounded-2xl px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[linear-gradient(135deg,var(--accent-blue),var(--accent-purple),var(--brand))] text-white shadow-lg shadow-blue-500/20">
+            <div className="brand-mark flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
               <Icon name="target" className="h-5 w-5" />
             </div>
             <div>

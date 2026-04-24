@@ -34,7 +34,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
 
   return (
     <form
-      className="mt-5 grid gap-3 lg:grid-cols-[76px_1fr_150px_auto]"
+      className="mt-5 grid gap-3 sm:grid-cols-[76px_minmax(0,1fr)]"
       onSubmit={handleSubmit}
     >
       <label className="flex flex-col gap-1.5">
@@ -61,7 +61,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
         />
       </label>
 
-      <label className="flex flex-col gap-1.5">
+      <label className="flex flex-col gap-1.5 sm:col-span-2">
         <span className="section-muted text-xs font-semibold uppercase">
           Category
         </span>
@@ -78,9 +78,9 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
         </select>
       </label>
 
-      <div className="flex items-end">
+      <div className="flex items-end sm:col-span-2">
         <button
-          className="accent-button inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-100 disabled:translate-y-0 disabled:opacity-45 lg:w-auto"
+          className="accent-button inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-100 disabled:translate-y-0 disabled:opacity-45"
           disabled={!name.trim()}
           type="submit"
         >

@@ -49,10 +49,10 @@ export function TaskForm({
 
   return (
     <form
-      className="mt-5 grid gap-3 lg:grid-cols-[1fr_150px_160px_auto]"
+      className="mt-5 grid gap-3 md:grid-cols-2"
       onSubmit={handleSubmit}
     >
-      <label className="flex flex-col gap-1.5">
+      <label className="flex flex-col gap-1.5 md:col-span-2">
         <span className="section-muted text-xs font-semibold uppercase">
           Task title
         </span>
@@ -93,9 +93,9 @@ export function TaskForm({
         />
       </label>
 
-      <div className="flex items-end gap-2">
+      <div className="flex flex-col items-stretch gap-2 md:col-span-2 sm:flex-row">
         <button
-          className="primary-button inline-flex min-h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-slate-200 disabled:translate-y-0 disabled:opacity-45 lg:flex-none"
+          className="primary-button inline-flex min-h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-slate-200 disabled:translate-y-0 disabled:opacity-45"
           disabled={!title.trim()}
           type="submit"
         >
