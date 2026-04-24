@@ -7,11 +7,18 @@
   --surface-muted: #f8fafc;
   --border: #dbe3ef;
   --muted: #64748b;
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-green: #0f766e;
   --brand: #0f766e;
   --brand-strong: #115e59;
   --danger: #e11d48;
-  --shadow: 0 18px 50px rgb(15 23 42 / 0.08);
-  --shell-bg: linear-gradient(135deg, #f8fafc 0%, #edf7f4 48%, #f7f3ff 100%);
+  --shadow: 0 18px 48px rgb(15 23 42 / 0.08);
+  --shadow-hover: 0 24px 60px rgb(15 23 42 / 0.13);
+  --shell-bg:
+    radial-gradient(circle at top left, rgb(219 234 254 / 0.72), transparent 34rem),
+    radial-gradient(circle at top right, rgb(237 233 254 / 0.68), transparent 30rem),
+    linear-gradient(135deg, #f8fafc 0%, #eff6ff 46%, #f0fdf4 100%);
 }
 
 :root[data-theme="dark"] {
@@ -21,11 +28,18 @@
   --surface-muted: #1d2634;
   --border: #2b3546;
   --muted: #a5b4c7;
+  --accent-blue: #60a5fa;
+  --accent-purple: #a78bfa;
+  --accent-green: #34d399;
   --brand: #2dd4bf;
   --brand-strong: #5eead4;
   --danger: #fb7185;
   --shadow: 0 20px 60px rgb(0 0 0 / 0.32);
-  --shell-bg: linear-gradient(135deg, #10141d 0%, #13251f 48%, #211b2d 100%);
+  --shadow-hover: 0 28px 72px rgb(0 0 0 / 0.42);
+  --shell-bg:
+    radial-gradient(circle at top left, rgb(37 99 235 / 0.18), transparent 34rem),
+    radial-gradient(circle at top right, rgb(124 58 237 / 0.16), transparent 32rem),
+    linear-gradient(135deg, #10141d 0%, #111827 46%, #12251e 100%);
 }
 
 @theme inline {
@@ -81,11 +95,22 @@ button:disabled {
     background: color-mix(in srgb, var(--surface) 94%, transparent);
     box-shadow: var(--shadow);
     color: var(--foreground);
+    backdrop-filter: blur(16px);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .dashboard-card:hover {
+    border-color: color-mix(in srgb, var(--brand) 24%, var(--border));
+    box-shadow: var(--shadow-hover);
   }
 
   .soft-card {
     border: 1px solid var(--border);
-    background: var(--surface-muted);
+    background: color-mix(in srgb, var(--surface-muted) 90%, transparent);
   }
 
   .section-title {
@@ -118,17 +143,19 @@ button:disabled {
   }
 
   .primary-button {
-    background: var(--foreground);
-    color: var(--background);
+    background: linear-gradient(135deg, var(--accent-blue), var(--brand));
+    color: #ffffff;
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--brand) 22%, transparent);
   }
 
   .primary-button:hover {
-    background: color-mix(in srgb, var(--foreground) 88%, var(--brand) 12%);
+    background: linear-gradient(135deg, var(--accent-purple), var(--brand));
   }
 
   .accent-button {
-    background: var(--brand);
+    background: linear-gradient(135deg, var(--accent-green), var(--brand));
     color: #ffffff;
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--brand) 22%, transparent);
   }
 
   .accent-button:hover {
@@ -148,5 +175,36 @@ button:disabled {
 
   .attention-row {
     background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  }
+
+  .accent-badge {
+    border: 1px solid color-mix(in srgb, var(--brand) 24%, var(--border));
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    color: var(--brand);
+  }
+
+  .progress-track {
+    height: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--muted) 14%, transparent);
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-blue),
+      var(--accent-purple),
+      var(--accent-green)
+    );
+    transition: width 220ms ease;
+  }
+
+  .hero-panel {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-muted) 92%, transparent)),
+      radial-gradient(circle at top right, color-mix(in srgb, var(--accent-purple) 16%, transparent), transparent 20rem);
   }
 }
