@@ -1,4 +1,7 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import { calculateStreak, formatShortDate } from "@/lib/date";
 import {
   getBestStreak,
@@ -6,6 +9,7 @@ import {
   getWeeklyHabitProgress,
   isHabitCompletedToday,
 } from "@/lib/habits";
+import { getLifeAreaLabelKey } from "@/lib/i18n";
 import type { Habit } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +33,7 @@ export function HabitRow({
   const bestStreak = getBestStreak(habit.completedDates);
   const weeklyProgress = getWeeklyHabitProgress(habit, todayKey);
   const categoryIcon = getHabitCategoryIcon(habit.category);
+  const { t } = useLanguage();
 
   return (
     <li className="soft-card rounded-lg p-4 transition hover:-translate-y-0.5 hover:shadow-lg">
@@ -44,19 +49,19 @@ export function HabitRow({
                 {habit.name}
               </h3>
               <span className="accent-badge rounded-md px-2 py-0.5 text-xs font-semibold">
-                {categoryIcon} {habit.category}
+                {categoryIcon} {t(getLifeAreaLabelKey(habit.category))}
               </span>
             </div>
             <p className="section-muted mt-1 text-sm">
               {completedToday
-                ? "Completed today"
-                : "Waiting for today's check-in"}
+                ? t("habit.completedToday")
+                : t("habit.waitingToday")}
             </p>
           </div>
 
           <div className="flex shrink-0 items-center gap-1">
             <button
-              aria-label={`Reset ${habit.name}`}
+              aria-label={t("aria.resetHabit", { name: habit.name })}
               className="icon-button flex h-9 w-9 items-center justify-center rounded-md transition"
               onClick={() => onResetHabit(habit.id)}
               type="button"
@@ -64,7 +69,7 @@ export function HabitRow({
               <Icon name="reset" className="h-4 w-4" />
             </button>
             <button
-              aria-label={`Delete ${habit.name}`}
+              aria-label={t("aria.deleteHabit", { name: habit.name })}
               className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--muted)] transition hover:bg-rose-50 hover:text-rose-600 focus:outline-none focus:ring-4 focus:ring-rose-100"
               onClick={() => onDeleteHabit(habit.id)}
               type="button"
@@ -75,18 +80,29 @@ export function HabitRow({
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <HabitStat label="Current" value={`${currentStreak} days`} />
-          <HabitStat label="Best" value={`${bestStreak} days`} />
-          <HabitStat label="Week" value={`${weeklyProgress.percentage}%`} />
+          <HabitStat
+            label={t("habit.current")}
+            value={`${currentStreak} ${t("common.days")}`}
+          />
+          <HabitStat
+            label={t("habit.best")}
+            value={`${bestStreak} ${t("common.days")}`}
+          />
+          <HabitStat
+            label={t("habit.week")}
+            value={`${weeklyProgress.percentage}%`}
+          />
         </div>
 
         <div>
           <div className="mb-2 flex items-center justify-between gap-3">
             <p className="section-muted text-xs font-semibold uppercase">
-              Weekly progress
+              {t("habit.weeklyProgress")}
             </p>
             <p className="section-muted text-xs font-semibold">
-              {weeklyProgress.completedCount}/7 days
+              {t("habit.weeklyProgressCount", {
+                completed: weeklyProgress.completedCount,
+              })}
             </p>
           </div>
           <div className="progress-track mb-3">
@@ -135,7 +151,7 @@ export function HabitRow({
             name={completedToday ? "checkCircle" : "circle"}
             className="h-4 w-4"
           />
-          {completedToday ? "Done today" : "Mark today complete"}
+          {completedToday ? t("habit.doneToday") : t("habit.markTodayComplete")}
         </button>
       </div>
     </li>

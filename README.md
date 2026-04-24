@@ -14,6 +14,7 @@ TypeScript, Tailwind CSS, React components, and localStorage persistence.
 - Pomodoro-style Focus Arena with task selection and session rewards
 - Character card, achievements, reward shop previews, and life area progress
 - Light and dark mode saved locally
+- English / Georgian language toggle saved locally
 - Toast notifications for feedback
 - Local-first persistence through `localStorage`
 - Responsive layout for desktop and mobile
@@ -33,9 +34,8 @@ app/
   tasks/page.tsx
 components/
   dashboard/
-    Dashboard.tsx
+    DashboardPreviewCards.tsx
     StatsGrid.tsx
-    WelcomePanel.tsx
   layout/
     AppShell.tsx
     PageHeader.tsx
@@ -51,14 +51,14 @@ components/
     LevelUpModal.tsx
     LifeAreasGrid.tsx
     RewardShop.tsx
-  pages/
-    AchievementsPage.tsx
-    DashboardPage.tsx
-    FocusPage.tsx
-    HabitsPage.tsx
-    ProfilePage.tsx
-    QuestsPage.tsx
-    TasksPage.tsx
+  views/
+    AchievementsView.tsx
+    DashboardView.tsx
+    FocusView.tsx
+    HabitsView.tsx
+    ProfileView.tsx
+    QuestsView.tsx
+    TasksView.tsx
   providers/
     LifeQuestProvider.tsx
   tasks/
@@ -70,16 +70,21 @@ components/
   ui/
     EmptyState.tsx
     Icon.tsx
+    LanguageToggle.tsx
+    MetricCard.tsx
+    PreviewPanel.tsx
     StatCard.tsx
     ThemeToggle.tsx
     Toast.tsx
 hooks/
+  use-language.ts
   useLocalStorage.ts
   useTheme.ts
   useToast.ts
 lib/
   date.ts
   habits.ts
+  i18n.ts
   id.ts
   lifeAreas.ts
   lifequest.ts

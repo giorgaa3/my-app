@@ -2,12 +2,15 @@
 
 import { DailyQuestBoard } from "@/components/lifequest/DailyQuestBoard";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Icon } from "@/components/ui/Icon";
-import { getDailyQuests } from "@/lib/lifequest";
 import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
+import { Icon } from "@/components/ui/Icon";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { useLanguage } from "@/hooks/use-language";
+import { getDailyQuests } from "@/lib/lifequest";
 
-export function QuestsPage() {
+export function QuestsView() {
   const { habits, profile, tasks, todayKey } = useLifeQuest();
+  const { t } = useLanguage();
   const quests = getDailyQuests(profile, tasks, habits, todayKey);
   const completedCount = quests.filter((quest) => quest.completed).length;
   const claimedCount = quests.filter((quest) => quest.claimed).length;
@@ -18,18 +21,33 @@ export function QuestsPage() {
         action={
           <div className="accent-badge inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold">
             <Icon name="target" className="h-4 w-4" />
-            {completedCount}/{quests.length} complete
+            {t("common.completeStatus", {
+              completed: completedCount,
+              total: quests.length,
+            })}
           </div>
         }
-        description="Daily quests reset by date and reward XP plus coins automatically when your tasks, habits, and focus sessions meet the conditions."
-        eyebrow="Daily Quests"
-        title="Today’s reward board"
+        description={t("quest.description")}
+        eyebrow={t("quest.eyebrow")}
+        title={t("quest.title")}
       />
 
       <section className="grid gap-4 sm:grid-cols-3">
-        <QuestMetric label="Completed" value={`${completedCount}/${quests.length}`} />
-        <QuestMetric label="Rewards claimed" value={`${claimedCount}/${quests.length}`} />
-        <QuestMetric label="Date key" value={todayKey} />
+        <MetricCard
+          label={t("quest.metric.completed")}
+          value={`${completedCount}/${quests.length}`}
+          valueSize="md"
+        />
+        <MetricCard
+          label={t("quest.metric.rewardsClaimed")}
+          value={`${claimedCount}/${quests.length}`}
+          valueSize="md"
+        />
+        <MetricCard
+          label={t("quest.metric.dateKey")}
+          value={todayKey}
+          valueSize="md"
+        />
       </section>
 
       <DailyQuestBoard
@@ -39,20 +57,5 @@ export function QuestsPage() {
         todayKey={todayKey}
       />
     </div>
-  );
-}
-
-function QuestMetric({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | string;
-}) {
-  return (
-    <article className="dashboard-card rounded-2xl p-4">
-      <p className="section-muted text-sm font-semibold">{label}</p>
-      <p className="section-title mt-2 text-2xl font-semibold">{value}</p>
-    </article>
   );
 }

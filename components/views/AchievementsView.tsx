@@ -3,12 +3,15 @@
 import { AchievementsPanel } from "@/components/lifequest/AchievementsPanel";
 import { RewardShop } from "@/components/lifequest/RewardShop";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Icon } from "@/components/ui/Icon";
-import { getAchievements, getRewardItems } from "@/lib/lifequest";
 import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
+import { Icon } from "@/components/ui/Icon";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { useLanguage } from "@/hooks/use-language";
+import { getAchievements, getRewardItems } from "@/lib/lifequest";
 
-export function AchievementsPage() {
+export function AchievementsView() {
   const { profile, todayKey } = useLifeQuest();
+  const { t } = useLanguage();
   const achievements = getAchievements(profile, todayKey);
   const unlockedAchievements = achievements.filter(
     (achievement) => achievement.unlocked,
@@ -22,24 +25,24 @@ export function AchievementsPage() {
         action={
           <div className="accent-badge inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold">
             <Icon name="checkCircle" className="h-4 w-4" />
-            {unlockedAchievements} badges unlocked
+            {t("achievements.badgesUnlocked", { count: unlockedAchievements })}
           </div>
         }
-        description="Track proof of progress and preview cosmetic rewards. Rewards stay local for now and unlock from coins and level progress."
-        eyebrow="Achievements / Rewards"
-        title="Badges and unlocks"
+        description={t("achievements.description")}
+        eyebrow={t("achievements.eyebrow")}
+        title={t("achievements.title")}
       />
 
       <section className="grid gap-4 sm:grid-cols-3">
-        <AchievementMetric
-          label="Achievements"
+        <MetricCard
+          label={t("achievements.metric.achievements")}
           value={`${unlockedAchievements}/${achievements.length}`}
         />
-        <AchievementMetric
-          label="Reward cards"
+        <MetricCard
+          label={t("achievements.metric.rewards")}
           value={`${unlockedRewards}/${rewards.length}`}
         />
-        <AchievementMetric label="Coins" value={profile.coins} />
+        <MetricCard label={t("achievements.metric.coins")} value={profile.coins} />
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
@@ -47,20 +50,5 @@ export function AchievementsPage() {
         <RewardShop profile={profile} />
       </div>
     </div>
-  );
-}
-
-function AchievementMetric({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | string;
-}) {
-  return (
-    <article className="dashboard-card rounded-2xl p-4">
-      <p className="section-muted text-sm font-semibold">{label}</p>
-      <p className="section-title mt-2 text-3xl font-semibold">{value}</p>
-    </article>
   );
 }

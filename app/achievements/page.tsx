@@ -1,5 +1,5 @@
-import { AchievementsPage } from "@/components/pages/AchievementsPage";
+import { AchievementsView } from "@/components/views/AchievementsView";
 
 export default function AchievementsRoute() {
-  return <AchievementsPage />;
+  return <AchievementsView />;
 }

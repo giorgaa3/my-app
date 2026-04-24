@@ -1,4 +1,7 @@
+"use client";
+
 import { StatCard } from "@/components/ui/StatCard";
+import { useLanguage } from "@/hooks/use-language";
 import type { DashboardStats } from "@/lib/types";
 
 type StatsGridProps = {
@@ -6,44 +9,46 @@ type StatsGridProps = {
 };
 
 export function StatsGrid({ stats }: StatsGridProps) {
+  const { t } = useLanguage();
+
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
       <StatCard
-        detail="Everything currently on your task board."
+        detail={t("stat.totalTasks.detail")}
         icon="list"
-        label="Total tasks"
+        label={t("stat.totalTasks.label")}
         progress={stats.totalTasks > 0 ? 100 : 0}
         tone="blue"
         value={String(stats.totalTasks)}
       />
       <StatCard
-        detail="Tasks moved across the finish line."
+        detail={t("stat.completedTasks.detail")}
         icon="checkCircle"
-        label="Completed tasks"
+        label={t("stat.completedTasks.label")}
         progress={stats.completionPercentage}
         tone="green"
         value={String(stats.completedTasks)}
       />
       <StatCard
-        detail="Routines available to check off today."
+        detail={t("stat.activeHabits.detail")}
         icon="flame"
-        label="Active habits"
+        label={t("stat.activeHabits.label")}
         progress={stats.activeHabits > 0 ? 100 : 0}
         tone="amber"
         value={String(stats.activeHabits)}
       />
       <StatCard
-        detail="Progress across all tracked tasks."
+        detail={t("stat.completion.detail")}
         icon="trend"
-        label="Completion"
+        label={t("stat.completion.label")}
         progress={stats.completionPercentage}
         tone="teal"
         value={`${stats.completionPercentage}%`}
       />
       <StatCard
-        detail="Tasks that need attention before today ends."
+        detail={t("stat.overdue.detail")}
         icon="alert"
-        label="Overdue"
+        label={t("stat.overdue.label")}
         progress={
           stats.totalTasks === 0
             ? 0
@@ -53,9 +58,9 @@ export function StatsGrid({ stats }: StatsGridProps) {
         value={String(stats.overdueTasks)}
       />
       <StatCard
-        detail="Work marked as the highest priority."
+        detail={t("stat.highPriority.detail")}
         icon="flag"
-        label="High priority"
+        label={t("stat.highPriority.label")}
         progress={
           stats.totalTasks === 0
             ? 0

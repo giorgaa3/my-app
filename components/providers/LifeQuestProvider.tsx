@@ -11,11 +11,13 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 import { LevelUpModal } from "@/components/lifequest/LevelUpModal";
 import { ToastViewport } from "@/components/ui/Toast";
+import { useLanguage } from "@/hooks/use-language";
 import { useLocalStorageState } from "@/hooks/useLocalStorage";
 import { useTheme } from "@/hooks/useTheme";
 import { useToast } from "@/hooks/useToast";
 import { getTodayKey } from "@/lib/date";
 import { getHabitDashboardSummary, normalizeHabits } from "@/lib/habits";
+import { getAchievementTitleKey, getLevelTitleKey } from "@/lib/i18n";
 import { createId } from "@/lib/id";
 import {
   addReward,
@@ -40,7 +42,6 @@ import type {
   TaskFilter,
   TaskInput,
   ThemeMode,
-  ToastMessage,
 } from "@/lib/types";
 
 const TASK_STORAGE_KEY = "pulseboard:tasks";
@@ -55,14 +56,12 @@ type LifeQuestContextValue = {
   completeFocusSession: () => void;
   deleteHabit: (habitId: string) => void;
   deleteTask: (taskId: string) => void;
-  dismissToast: (toastId: string) => void;
   habitSummary: ReturnType<typeof getHabitDashboardSummary>;
   habits: Habit[];
   isStorageReady: boolean;
   profile: LifeQuestProfile;
   resetHabit: (habitId: string) => void;
   setTaskFilter: Dispatch<SetStateAction<TaskFilter>>;
-  showToast: (message: string, tone?: "success" | "error" | "info") => void;
   stats: DashboardStats;
   taskFilter: TaskFilter;
   taskSummary: ReturnType<typeof getTaskSummary>;
@@ -72,7 +71,6 @@ type LifeQuestContextValue = {
   toggleHabitToday: (habitId: string) => void;
   toggleTask: (taskId: string) => void;
   toggleTheme: () => void;
-  toasts: ToastMessage[];
   updateTask: (taskId: string, task: TaskInput) => void;
 };
 
@@ -101,6 +99,7 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
     );
   const { theme, toggleTheme } = useTheme();
   const { dismissToast, showToast, toasts } = useToast();
+  const { t } = useLanguage();
 
   const todayKey = getTodayKey();
   const tasks = useMemo(() => normalizeTasks(storedTasks), [storedTasks]);
@@ -161,27 +160,27 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
             (achievement) =>
               achievement.unlocked && !previousAchievements.has(achievement.id),
           )
-          .map((achievement) => achievement.title);
+          .map((achievement) => t(getAchievementTitleKey(achievement.id)));
 
         setLevelUpDetails({
           achievements: newlyUnlockedAchievements,
           avatar: nextLevel.avatar,
           coinsGained: Math.max(syncedProfile.coins - profile.coins, 0),
           level: nextLevel.level,
-          title: nextLevel.title,
+          title: t(getLevelTitleKey(nextLevel.title)),
           totalCoins: syncedProfile.coins,
           xp: syncedProfile.xp,
           xpGained: Math.max(syncedProfile.xp - profile.xp, 0),
         });
       }
     },
-    [habits, profile, setProfile, tasks, todayKey],
+    [habits, profile, setProfile, t, tasks, todayKey],
   );
 
   const addTask = useCallback(
     (taskInput: TaskInput) => {
       if (!taskInput.title.trim()) {
-        showToast("Add a task title first.", "error");
+        showToast(t("toast.addTaskTitle"), "error");
         return;
       }
 
@@ -198,15 +197,15 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
         ...tasks,
       ]);
 
-      showToast("Quest added to your task log.", "success");
+      showToast(t("toast.taskAdded"), "success");
     },
-    [setTasks, showToast, tasks],
+    [setTasks, showToast, t, tasks],
   );
 
   const updateTask = useCallback(
     (taskId: string, taskInput: TaskInput) => {
       if (!taskInput.title.trim()) {
-        showToast("Task title cannot be empty.", "error");
+        showToast(t("toast.taskTitleEmpty"), "error");
         return;
       }
 
@@ -224,9 +223,9 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
         ),
       );
 
-      showToast("Quest updated.", "success");
+      showToast(t("toast.taskUpdated"), "success");
     },
-    [setTasks, showToast, tasks],
+    [setTasks, showToast, t, tasks],
   );
 
   const toggleTask = useCallback(
@@ -263,26 +262,26 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
 
       showToast(
         isCompleting
-          ? `Quest complete: +${TASK_REWARDS[task.priority].xp} XP`
-          : "Task moved back to active.",
+          ? t("toast.taskReward", { xp: TASK_REWARDS[task.priority].xp })
+          : t("toast.taskActive"),
         isCompleting ? "success" : "info",
       );
     },
-    [habits, persistProfile, profile, setTasks, showToast, tasks, todayKey],
+    [habits, persistProfile, profile, setTasks, showToast, t, tasks, todayKey],
   );
 
   const deleteTask = useCallback(
     (taskId: string) => {
       const task = tasks.find((currentTask) => currentTask.id === taskId);
 
-      if (!task || !window.confirm(`Delete "${task.title}"?`)) {
+      if (!task || !window.confirm(t("confirm.deleteTask", { title: task.title }))) {
         return;
       }
 
       setTasks(tasks.filter((currentTask) => currentTask.id !== taskId));
-      showToast("Task deleted.", "info");
+      showToast(t("toast.taskDeleted"), "info");
     },
-    [setTasks, showToast, tasks],
+    [setTasks, showToast, t, tasks],
   );
 
   const addHabit = useCallback(
@@ -290,7 +289,7 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       const trimmedName = habitInput.name.trim();
 
       if (!trimmedName) {
-        showToast("Add a habit name first.", "error");
+        showToast(t("toast.addHabitName"), "error");
         return;
       }
 
@@ -299,7 +298,7 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       );
 
       if (habitExists) {
-        showToast("That habit already exists.", "error");
+        showToast(t("toast.duplicateHabit"), "error");
         return;
       }
 
@@ -315,9 +314,9 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
         ...habits,
       ]);
 
-      showToast("Habit added to your training plan.", "success");
+      showToast(t("toast.habitAdded"), "success");
     },
-    [habits, setHabits, showToast],
+    [habits, setHabits, showToast, t],
   );
 
   const toggleHabitToday = useCallback(
@@ -369,19 +368,22 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
 
       showToast(
         hasCompletedToday
-          ? "Today's habit check-in was removed."
-          : `Habit complete: +${HABIT_REWARD.xp} XP`,
+          ? t("toast.habitRemovedToday")
+          : t("toast.habitReward", { xp: HABIT_REWARD.xp }),
         hasCompletedToday ? "info" : "success",
       );
     },
-    [habits, persistProfile, profile, setHabits, showToast, tasks, todayKey],
+    [habits, persistProfile, profile, setHabits, showToast, t, tasks, todayKey],
   );
 
   const resetHabit = useCallback(
     (habitId: string) => {
       const habit = habits.find((currentHabit) => currentHabit.id === habitId);
 
-      if (!habit || !window.confirm(`Reset all progress for "${habit.name}"?`)) {
+      if (
+        !habit ||
+        !window.confirm(t("confirm.resetHabit", { name: habit.name }))
+      ) {
         return;
       }
 
@@ -393,23 +395,23 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
         ),
       );
 
-      showToast("Habit progress reset.", "info");
+      showToast(t("toast.habitProgressReset"), "info");
     },
-    [habits, setHabits, showToast],
+    [habits, setHabits, showToast, t],
   );
 
   const deleteHabit = useCallback(
     (habitId: string) => {
       const habit = habits.find((currentHabit) => currentHabit.id === habitId);
 
-      if (!habit || !window.confirm(`Delete "${habit.name}"?`)) {
+      if (!habit || !window.confirm(t("confirm.deleteHabit", { name: habit.name }))) {
         return;
       }
 
       setHabits(habits.filter((currentHabit) => currentHabit.id !== habitId));
-      showToast("Habit deleted.", "info");
+      showToast(t("toast.habitDeleted"), "info");
     },
-    [habits, setHabits, showToast],
+    [habits, setHabits, showToast, t],
   );
 
   const completeFocusSession = useCallback(() => {
@@ -424,8 +426,8 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
     );
 
     persistProfile(nextProfile, tasks, habits);
-    showToast(`Focus session complete: +${FOCUS_REWARD.xp} XP`, "success");
-  }, [habits, persistProfile, profile, showToast, tasks, todayKey]);
+    showToast(t("toast.focusComplete", { xp: FOCUS_REWARD.xp }), "success");
+  }, [habits, persistProfile, profile, showToast, t, tasks, todayKey]);
 
   const contextValue = useMemo<LifeQuestContextValue>(
     () => ({
@@ -434,14 +436,12 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       completeFocusSession,
       deleteHabit,
       deleteTask,
-      dismissToast,
       habitSummary,
       habits,
       isStorageReady: tasksReady && habitsReady,
       profile,
       resetHabit,
       setTaskFilter,
-      showToast,
       stats,
       taskFilter,
       taskSummary,
@@ -451,7 +451,6 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       toggleHabitToday,
       toggleTask,
       toggleTheme,
-      toasts,
       updateTask,
     }),
     [
@@ -460,13 +459,11 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       completeFocusSession,
       deleteHabit,
       deleteTask,
-      dismissToast,
       habitSummary,
       habits,
       habitsReady,
       profile,
       resetHabit,
-      showToast,
       stats,
       taskFilter,
       taskSummary,
@@ -477,7 +474,6 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       toggleHabitToday,
       toggleTask,
       toggleTheme,
-      toasts,
       updateTask,
     ],
   );

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import type { LevelUpDetails } from "@/lib/types";
 
 type LevelUpModalProps = {
@@ -13,6 +14,7 @@ type LevelUpModalProps = {
 
 export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!details) {
@@ -50,7 +52,7 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
         <div className="absolute right-4 top-4">
           <button
-            aria-label="Close level up modal"
+            aria-label={t("aria.closeLevelUp")}
             className="icon-button inline-flex h-9 w-9 items-center justify-center rounded-xl transition"
             onClick={onClose}
             type="button"
@@ -65,16 +67,16 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
 
         <div className="mt-5 text-center">
           <p className="section-muted text-sm font-semibold uppercase tracking-wide">
-            Level Up
+            {t("levelUp.title")}
           </p>
           <h2
             className="section-title mt-2 text-3xl font-semibold"
             id="level-up-title"
           >
-            Level {details.level} reached
+            {t("levelUp.levelReached", { level: details.level })}
           </h2>
           <p className="section-muted mt-2 text-sm leading-6">
-            New title unlocked:{" "}
+            {t("levelUp.newTitle")}{" "}
             <span className="font-semibold text-[var(--brand)]">
               {details.title}
             </span>
@@ -82,14 +84,17 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <RewardMetric label="XP earned" value={`+${details.xpGained}`} />
-          <RewardMetric label="Coins earned" value={`+${details.coinsGained}`} />
-          <RewardMetric label="Coin balance" value={details.totalCoins} />
+          <RewardMetric label={t("levelUp.xpEarned")} value={`+${details.xpGained}`} />
+          <RewardMetric
+            label={t("levelUp.coinsEarned")}
+            value={`+${details.coinsGained}`}
+          />
+          <RewardMetric label={t("levelUp.coinBalance")} value={details.totalCoins} />
         </div>
 
         <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)] p-4">
           <p className="section-title text-sm font-semibold">
-            Rewards unlocked
+            {t("levelUp.rewardsUnlocked")}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {details.achievements.length > 0 ? (
@@ -103,7 +108,7 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
               ))
             ) : (
               <span className="section-muted text-sm">
-                A stronger title and progress toward new cosmetic rewards.
+                {t("levelUp.achievementFallback")}
               </span>
             )}
           </div>
@@ -116,7 +121,7 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
             type="button"
           >
             <Icon name="spark" className="h-4 w-4" />
-            Awesome
+            {t("levelUp.awesome")}
           </button>
           <button
             className="icon-button inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition hover:-translate-y-0.5"
@@ -124,7 +129,7 @@ export function LevelUpModal({ details, onClose }: LevelUpModalProps) {
             type="button"
           >
             <Icon name="target" className="h-4 w-4" />
-            View Profile
+            {t("levelUp.viewProfile")}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import { FOCUS_REWARD } from "@/lib/lifequest";
 import type { Task } from "@/lib/types";
 
@@ -21,6 +22,7 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
   const [selectedTaskId, setSelectedTaskId] = useState(activeTasks[0]?.id ?? "");
   const [secondsLeft, setSecondsLeft] = useState(FOCUS_DURATION_SECONDS);
   const [isRunning, setIsRunning] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!isRunning) {
@@ -59,25 +61,27 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase text-white/70">
-            Focus Arena
+            {t("focus.eyebrow")}
           </p>
           <h2 className="mt-1 text-2xl font-semibold text-white">
-            Enter a 25-minute session
+            {t("focus.arena.title")}
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-white/70">
-            Pick a task, start the arena, and earn +{FOCUS_REWARD.xp} XP and +
-            {FOCUS_REWARD.coins} coins when the session ends.
+            {t("focus.arena.description", {
+              coins: FOCUS_REWARD.coins,
+              xp: FOCUS_REWARD.xp,
+            })}
           </p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/10 px-3 py-2 text-sm font-semibold text-white">
-          +{FOCUS_REWARD.xp} XP
+          {t("focus.arena.reward", { xp: FOCUS_REWARD.xp })}
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_220px] lg:items-end">
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-semibold uppercase text-white/65">
-            Arena target
+            {t("focus.arena.target")}
           </span>
           <select
             className="min-h-11 rounded-xl border border-white/10 bg-white/10 px-3 text-sm text-white outline-none"
@@ -92,7 +96,7 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
               ))
             ) : (
               <option className="text-slate-950" value="">
-                Add an active task first
+                {t("focus.emptyTasks")}
               </option>
             )}
           </select>
@@ -103,7 +107,7 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </p>
           <p className="mt-1 text-xs font-semibold uppercase text-white/60">
-            Focus clock
+            {t("focus.clock")}
           </p>
         </div>
       </div>
@@ -123,7 +127,7 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
           type="button"
         >
           <Icon name={isRunning ? "circle" : "spark"} className="h-4 w-4" />
-          {isRunning ? "Pause" : "Start"}
+          {isRunning ? t("focus.pause") : t("focus.start")}
         </button>
         <button
           className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5"
@@ -131,7 +135,7 @@ export function FocusArena({ onCompleteSession, tasks }: FocusArenaProps) {
           type="button"
         >
           <Icon name="reset" className="h-4 w-4" />
-          Reset
+          {t("focus.reset")}
         </button>
       </div>
     </section>

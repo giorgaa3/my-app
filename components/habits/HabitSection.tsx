@@ -1,6 +1,8 @@
 "use client";
 
 import { EmptyState } from "@/components/ui/EmptyState";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { useLanguage } from "@/hooks/use-language";
 import { getHabitDashboardSummary } from "@/lib/habits";
 import type { Habit, HabitInput } from "@/lib/types";
 import { HabitForm } from "./HabitForm";
@@ -24,6 +26,7 @@ export function HabitSection({
   todayKey,
 }: HabitSectionProps) {
   const summary = getHabitDashboardSummary(habits, todayKey);
+  const { t } = useLanguage();
 
   return (
     <section className="dashboard-card overflow-hidden rounded-2xl">
@@ -31,25 +34,42 @@ export function HabitSection({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-2">
             <p className="section-muted text-sm font-semibold uppercase">
-              Habits
+              {t("habit.eyebrow")}
             </p>
             <h2 className="section-title text-2xl font-semibold">
-              Keep the streak alive
+              {t("habit.section.title")}
             </h2>
             <p className="section-muted max-w-2xl text-sm leading-6">
-              See today&apos;s check-ins, streaks, and weekly rhythm in one
-              calm view.
+              {t("habit.section.description")}
             </p>
           </div>
           <div className="accent-badge inline-flex items-center gap-2 self-start rounded-md px-3 py-2 text-sm font-semibold">
-            {summary.completedToday}/{summary.total} today
+            {t("habit.statusToday", {
+              completed: summary.completedToday,
+              total: summary.total,
+            })}
           </div>
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <HabitMetric label="Done today" value={`${summary.completedToday}/${summary.total}`} />
-          <HabitMetric label="Best streak" value={`${summary.bestStreak}d`} />
-          <HabitMetric label="Current best" value={`${summary.currentStreak}d`} />
+          <MetricCard
+            label={t("habit.doneTodayCount")}
+            value={`${summary.completedToday}/${summary.total}`}
+            valueSize="md"
+            variant="soft"
+          />
+          <MetricCard
+            label={t("habit.bestStreak")}
+            value={`${summary.bestStreak}${t("common.daysShort")}`}
+            valueSize="md"
+            variant="soft"
+          />
+          <MetricCard
+            label={t("habit.currentBest")}
+            value={`${summary.currentStreak}${t("common.daysShort")}`}
+            valueSize="md"
+            variant="soft"
+          />
         </div>
 
         <HabitForm onAddHabit={onAddHabit} />
@@ -73,29 +93,15 @@ export function HabitSection({
           <EmptyState
             action={
               <span className="accent-badge rounded-md px-3 py-2 text-sm font-semibold">
-                Add your first habit above
+                {t("habit.addFirst")}
               </span>
             }
-            description="Choose a small routine, give it a category badge, and track it through the week."
+            description={t("habit.empty.description")}
             icon="flame"
-            title="No habits yet"
+            title={t("habit.empty.title")}
           />
         )}
       </div>
     </section>
-  );
-}
-
-type HabitMetricProps = {
-  label: string;
-  value: string;
-};
-
-function HabitMetric({ label, value }: HabitMetricProps) {
-  return (
-    <div className="soft-card rounded-lg px-4 py-3 transition hover:-translate-y-0.5">
-      <p className="section-muted text-xs font-semibold uppercase">{label}</p>
-      <p className="section-title mt-1 text-xl font-semibold">{value}</p>
-    </div>
   );
 }

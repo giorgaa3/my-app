@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
+import { getLifeAreaLabelKey, getPriorityLabelKey } from "@/lib/i18n";
 import { lifeAreaOptions } from "@/lib/lifeAreas";
 import { taskPriorityOptions } from "@/lib/tasks";
 import type { LifeArea, Task, TaskInput, TaskPriority } from "@/lib/types";
@@ -30,6 +32,7 @@ export function TaskForm({
   );
   const [dueDate, setDueDate] = useState(editingTask?.dueDate ?? "");
   const isEditing = Boolean(editingTask);
+  const { t } = useLanguage();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,19 +63,19 @@ export function TaskForm({
     >
       <label className="flex flex-col gap-1.5 md:col-span-2">
         <span className="section-muted text-xs font-semibold uppercase">
-          Task title
+          {t("task.form.title")}
         </span>
         <input
           className="field-control rounded-lg px-4 text-sm"
           onChange={(event) => setTitle(event.target.value)}
-          placeholder="Example: Finish portfolio case study"
+          placeholder={t("task.form.placeholder")}
           value={title}
         />
       </label>
 
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
-          Priority
+          {t("task.form.priority")}
         </span>
         <select
           className="field-control rounded-lg px-3 text-sm"
@@ -81,7 +84,7 @@ export function TaskForm({
         >
           {taskPriorityOptions.map((option) => (
             <option key={option.value} value={option.value}>
-              {option.label}
+              {t(getPriorityLabelKey(option.value))}
             </option>
           ))}
         </select>
@@ -89,7 +92,7 @@ export function TaskForm({
 
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
-          Life area
+          {t("task.form.lifeArea")}
         </span>
         <select
           className="field-control rounded-lg px-3 text-sm"
@@ -98,7 +101,7 @@ export function TaskForm({
         >
           {lifeAreaOptions.map((option) => (
             <option key={option.area} value={option.area}>
-              {option.emoji} {option.area}
+              {option.emoji} {t(getLifeAreaLabelKey(option.area))}
             </option>
           ))}
         </select>
@@ -106,7 +109,7 @@ export function TaskForm({
 
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
-          Due date
+          {t("task.form.dueDate")}
         </span>
         <input
           className="field-control rounded-lg px-3 text-sm"
@@ -123,7 +126,7 @@ export function TaskForm({
           type="submit"
         >
           <Icon name={isEditing ? "save" : "plus"} className="h-4 w-4" />
-          {isEditing ? "Save task" : "Add task"}
+          {isEditing ? t("common.saveTask") : t("common.addTask")}
         </button>
         {isEditing ? (
           <button
@@ -131,7 +134,7 @@ export function TaskForm({
             onClick={onCancelEdit}
             type="button"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
         ) : null}
       </div>

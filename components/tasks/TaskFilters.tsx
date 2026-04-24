@@ -1,4 +1,8 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
+import { getFilterLabelKey } from "@/lib/i18n";
 import { getTaskFilterCount } from "@/lib/tasks";
 import type { Task, TaskFilter } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -12,12 +16,12 @@ type TaskFiltersProps = {
   todayKey: string;
 };
 
-const filters: Array<{ label: string; value: TaskFilter }> = [
-  { label: "All", value: "all" },
-  { label: "Active", value: "active" },
-  { label: "Completed", value: "completed" },
-  { label: "Overdue", value: "overdue" },
-  { label: "High Priority", value: "high" },
+const filters: Array<{ value: TaskFilter }> = [
+  { value: "all" },
+  { value: "active" },
+  { value: "completed" },
+  { value: "overdue" },
+  { value: "high" },
 ];
 
 export function TaskFilters({
@@ -28,10 +32,12 @@ export function TaskFilters({
   tasks,
   todayKey,
 }: TaskFiltersProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="flex flex-col gap-3">
       <label className="relative block">
-        <span className="sr-only">Search tasks</span>
+        <span className="sr-only">{t("task.search")}</span>
         <Icon
           name="search"
           className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]"
@@ -39,7 +45,7 @@ export function TaskFilters({
         <input
           className="field-control w-full rounded-lg py-2 pl-10 pr-4 text-sm"
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search tasks by title"
+          placeholder={t("task.searchPlaceholder")}
           value={searchQuery}
         />
       </label>
@@ -60,7 +66,7 @@ export function TaskFilters({
               onClick={() => onFilterChange(item.value)}
               type="button"
             >
-              {item.label}
+              {t(getFilterLabelKey(item.value))}
               <span
                 className={cn(
                   "rounded-md px-1.5 py-0.5 text-xs",

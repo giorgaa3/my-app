@@ -1,5 +1,5 @@
-import { TasksPage } from "@/components/pages/TasksPage";
+import { TasksView } from "@/components/views/TasksView";
 
 export default function TasksRoute() {
-  return <TasksPage />;
+  return <TasksView />;
 }

@@ -1,3 +1,7 @@
+"use client";
+
+import { useLanguage } from "@/hooks/use-language";
+import { getLevelTitleKey } from "@/lib/i18n";
 import { getDailyStreak, getLevelInfo } from "@/lib/lifequest";
 import type { LifeQuestProfile } from "@/lib/types";
 
@@ -9,6 +13,7 @@ type CharacterCardProps = {
 export function CharacterCard({ profile, todayKey }: CharacterCardProps) {
   const levelInfo = getLevelInfo(profile.xp);
   const dailyStreak = getDailyStreak(profile.activeDates, todayKey);
+  const { t } = useLanguage();
 
   return (
     <section className="dashboard-card lifequest-card rounded-2xl p-5">
@@ -18,27 +23,31 @@ export function CharacterCard({ profile, todayKey }: CharacterCardProps) {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold uppercase text-white/70">
-            LifeQuest Character
+            {t("profile.characterCard.eyebrow")}
           </p>
           <h2 className="mt-1 text-2xl font-semibold text-white">
-            Level {levelInfo.level} {levelInfo.title}
+            {t("common.level")} {levelInfo.level}{" "}
+            {t(getLevelTitleKey(levelInfo.title))}
           </h2>
           <p className="mt-2 text-sm leading-6 text-white/75">
-            Real-life progress, converted into XP, coins, and momentum.
+            {t("profile.characterCard.description")}
           </p>
         </div>
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <CharacterMetric label="XP" value={profile.xp} />
-        <CharacterMetric label="Coins" value={profile.coins} />
-        <CharacterMetric label="Streak" value={`${dailyStreak}d`} />
+        <CharacterMetric label={t("common.xp")} value={profile.xp} />
+        <CharacterMetric label={t("common.coins")} value={profile.coins} />
+        <CharacterMetric
+          label={t("profile.streak")}
+          value={`${dailyStreak}${t("common.daysShort")}`}
+        />
       </div>
 
       <div className="mt-6">
         <div className="mb-2 flex items-center justify-between text-sm font-semibold text-white/80">
-          <span>Next level</span>
-          <span>{levelInfo.xpToNextLevel} XP left</span>
+          <span>{t("profile.nextLevel")}</span>
+          <span>{t("dashboard.nextLevel", { xp: levelInfo.xpToNextLevel })}</span>
         </div>
         <div className="h-3 overflow-hidden rounded-full bg-white/15">
           <div
@@ -47,8 +56,10 @@ export function CharacterCard({ profile, todayKey }: CharacterCardProps) {
           />
         </div>
         <p className="mt-2 text-xs font-medium text-white/65">
-          {levelInfo.xpIntoLevel}/{levelInfo.nextLevelXp - levelInfo.currentLevelXp} XP
-          through this level
+          {t("profile.xpThroughLevel", {
+            current: levelInfo.xpIntoLevel,
+            target: levelInfo.nextLevelXp - levelInfo.currentLevelXp,
+          })}
         </p>
       </div>
     </section>

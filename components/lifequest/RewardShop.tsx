@@ -1,3 +1,10 @@
+"use client";
+
+import { useLanguage } from "@/hooks/use-language";
+import {
+  getRewardDescriptionKey,
+  getRewardTitleKey,
+} from "@/lib/i18n";
 import { getRewardItems } from "@/lib/lifequest";
 import type { LifeQuestProfile } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -8,18 +15,19 @@ type RewardShopProps = {
 
 export function RewardShop({ profile }: RewardShopProps) {
   const rewards = getRewardItems(profile);
+  const { t } = useLanguage();
 
   return (
     <section className="dashboard-card rounded-2xl p-5">
       <div className="flex flex-col gap-2">
         <p className="section-muted text-sm font-semibold uppercase">
-          Rewards Shop
+          {t("reward.shop.eyebrow")}
         </p>
         <h2 className="section-title text-2xl font-semibold">
-          Cosmetic unlocks
+          {t("reward.shop.title")}
         </h2>
         <p className="section-muted text-sm leading-6">
-          Coins are saved now. These cards preview future cosmetic rewards.
+          {t("reward.shop.description")}
         </p>
       </div>
 
@@ -41,14 +49,14 @@ export function RewardShop({ profile }: RewardShopProps) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="section-title text-sm font-semibold">
-                    {reward.title}
+                    {t(getRewardTitleKey(reward.id))}
                   </h3>
                   <span className="section-muted text-xs font-semibold">
-                    {reward.cost} coins
+                    {t("reward.cost", { cost: reward.cost })}
                   </span>
                 </div>
                 <p className="section-muted mt-1 text-sm leading-5">
-                  {reward.description}
+                  {t(getRewardDescriptionKey(reward.id))}
                 </p>
               </div>
             </div>

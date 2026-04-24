@@ -4,7 +4,9 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import { habitCategoryOptions } from "@/lib/habits";
+import { getLifeAreaLabelKey } from "@/lib/i18n";
 import type { HabitInput, LifeArea } from "@/lib/types";
 
 type HabitFormProps = {
@@ -17,6 +19,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
   const [category, setCategory] = useState<LifeArea>(
     habitCategoryOptions[0].label,
   );
+  const { t } = useLanguage();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,7 +42,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
     >
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
-          Icon
+          {t("habit.form.icon")}
         </span>
         <input
           className="field-control rounded-lg px-3 text-center text-lg"
@@ -51,19 +54,19 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
 
       <label className="flex flex-col gap-1.5">
         <span className="section-muted text-xs font-semibold uppercase">
-          Habit name
+          {t("habit.form.name")}
         </span>
         <input
           className="field-control rounded-lg px-4 text-sm"
           onChange={(event) => setName(event.target.value)}
-          placeholder="Example: Read for 20 minutes"
+          placeholder={t("habit.form.placeholder")}
           value={name}
         />
       </label>
 
       <label className="flex flex-col gap-1.5 sm:col-span-2">
         <span className="section-muted text-xs font-semibold uppercase">
-          Category
+          {t("habit.category")}
         </span>
         <select
           className="field-control rounded-lg px-3 text-sm"
@@ -72,7 +75,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
         >
           {habitCategoryOptions.map((option) => (
             <option key={option.label} value={option.label}>
-              {option.icon} {option.label}
+              {option.icon} {t(getLifeAreaLabelKey(option.label))}
             </option>
           ))}
         </select>
@@ -85,7 +88,7 @@ export function HabitForm({ onAddHabit }: HabitFormProps) {
           type="submit"
         >
           <Icon name="plus" className="h-4 w-4" />
-          Add habit
+          {t("common.addHabit")}
         </button>
       </div>
     </form>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { EmptyState } from "@/components/ui/EmptyState";
+import { useLanguage } from "@/hooks/use-language";
 import { filterTasks } from "@/lib/tasks";
 import type { Task, TaskFilter, TaskInput } from "@/lib/types";
 import { TaskFilters } from "./TaskFilters";
@@ -33,6 +34,7 @@ export function TaskSection({
 }: TaskSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const { t } = useLanguage();
 
   const filteredTasks = useMemo(
     () => filterTasks(tasks, filter, searchQuery, todayKey),
@@ -54,18 +56,17 @@ export function TaskSection({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-2">
             <p className="section-muted text-sm font-semibold uppercase">
-              Tasks
+              {t("task.eyebrow")}
             </p>
             <h2 className="section-title text-2xl font-semibold">
-              Plan the work, then clear it
+              {t("task.section.title")}
             </h2>
             <p className="section-muted max-w-2xl text-sm leading-6">
-              Sort by urgency, search quickly, and update tasks without leaving
-              the dashboard.
+              {t("task.section.description")}
             </p>
           </div>
           <div className="accent-badge inline-flex items-center gap-2 self-start rounded-md px-3 py-2 text-sm font-semibold">
-            {tasks.length} total
+            {t("task.totalBadge", { count: tasks.length })}
           </div>
         </div>
 
@@ -109,17 +110,21 @@ export function TaskSection({
               action={
                 !searchQuery.trim() ? (
                   <span className="accent-badge rounded-md px-3 py-2 text-sm font-semibold">
-                    Add your first task above
+                    {t("task.addFirst")}
                   </span>
                 ) : undefined
               }
               description={
                 searchQuery.trim()
-                  ? "Try a different search term or clear the search field."
-                  : "Create one focused task, choose a priority, and the dashboard will start filling in."
+                  ? t("task.empty.noMatches.description")
+                  : t("task.empty.description")
               }
               icon={searchQuery.trim() ? "search" : "list"}
-              title={searchQuery.trim() ? "No matching tasks" : "No tasks yet"}
+              title={
+                searchQuery.trim()
+                  ? t("task.empty.noMatches.title")
+                  : t("task.empty.title")
+              }
             />
           )}
         </div>

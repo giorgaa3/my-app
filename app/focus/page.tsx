@@ -1,5 +1,5 @@
-import { FocusPage } from "@/components/pages/FocusPage";
+import { FocusView } from "@/components/views/FocusView";
 
 export default function FocusRoute() {
-  return <FocusPage />;
+  return <FocusView />;
 }

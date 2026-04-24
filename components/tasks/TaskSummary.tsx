@@ -1,4 +1,7 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import { getTaskSummary } from "@/lib/tasks";
 import type { Task } from "@/lib/types";
 
@@ -13,25 +16,26 @@ export function TaskSummary({ tasks, todayKey }: TaskSummaryProps) {
     summary.total === 0
       ? 0
       : Math.round((summary.completed / summary.total) * 100);
+  const { t } = useLanguage();
 
   return (
     <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <SummaryPill label="Active" tone="blue" value={summary.active} />
+      <SummaryPill label={t("task.metric.active")} tone="blue" value={summary.active} />
       <SummaryPill
-        label="Completed"
+        label={t("task.metric.completed")}
         progress={completion}
         tone="green"
         value={summary.completed}
       />
       <SummaryPill
         icon={summary.overdue > 0 ? "alert" : undefined}
-        label="Overdue"
+        label={t("task.metric.overdue")}
         tone="rose"
         value={summary.overdue}
       />
       <SummaryPill
         icon="flag"
-        label="High priority"
+        label={t("common.highPriority")}
         tone="purple"
         value={summary.highPriority}
       />

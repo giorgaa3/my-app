@@ -1,4 +1,7 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
 import type { ToastMessage, ToastTone } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +17,8 @@ const toastToneClasses: Record<ToastTone, string> = {
 };
 
 export function ToastViewport({ onDismiss, toasts }: ToastViewportProps) {
+  const { t } = useLanguage();
+
   if (toasts.length === 0) {
     return null;
   }
@@ -35,7 +40,7 @@ export function ToastViewport({ onDismiss, toasts }: ToastViewportProps) {
           />
           <p className="min-w-0 flex-1 leading-6">{toast.message}</p>
           <button
-            aria-label="Dismiss notification"
+            aria-label={t("aria.dismissNotification")}
             className="rounded-md p-1 opacity-70 transition hover:bg-white/50 hover:opacity-100"
             onClick={() => onDismiss(toast.id)}
             type="button"

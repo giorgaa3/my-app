@@ -1,12 +1,14 @@
 "use client";
 
 import { PageHeader } from "@/components/layout/PageHeader";
+import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
 import { TaskSection } from "@/components/tasks/TaskSection";
 import { Icon } from "@/components/ui/Icon";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { useLanguage } from "@/hooks/use-language";
 import { TASK_REWARDS } from "@/lib/lifequest";
-import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
 
-export function TasksPage() {
+export function TasksView() {
   const {
     addTask,
     deleteTask,
@@ -18,6 +20,7 @@ export function TasksPage() {
     toggleTask,
     updateTask,
   } = useLifeQuest();
+  const { t } = useLanguage();
 
   return (
     <div className="flex flex-col gap-6">
@@ -25,19 +28,25 @@ export function TasksPage() {
         action={
           <div className="accent-badge inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold">
             <Icon name="spark" className="h-4 w-4" />
-            +{TASK_REWARDS.medium.xp} XP for a medium quest
+            {t("task.rewardMedium", { xp: TASK_REWARDS.medium.xp })}
           </div>
         }
-        description="Add, edit, search, filter, complete, and delete tasks from one focused board. Completing tasks rewards XP and coins automatically."
-        eyebrow="Tasks"
-        title="Quest log"
+        description={t("task.description")}
+        eyebrow={t("task.eyebrow")}
+        title={t("task.title")}
       />
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <TaskMetric label="Total" value={taskSummary.total} />
-        <TaskMetric label="Active" value={taskSummary.active} />
-        <TaskMetric label="Completed" value={taskSummary.completed} />
-        <TaskMetric label="Overdue" value={taskSummary.overdue} />
+        <MetricCard label={t("task.metric.total")} value={taskSummary.total} />
+        <MetricCard label={t("task.metric.active")} value={taskSummary.active} />
+        <MetricCard
+          label={t("task.metric.completed")}
+          value={taskSummary.completed}
+        />
+        <MetricCard
+          label={t("task.metric.overdue")}
+          value={taskSummary.overdue}
+        />
       </section>
 
       <TaskSection
@@ -51,14 +60,5 @@ export function TasksPage() {
         todayKey={todayKey}
       />
     </div>
-  );
-}
-
-function TaskMetric({ label, value }: { label: string; value: number }) {
-  return (
-    <article className="dashboard-card rounded-2xl p-4">
-      <p className="section-muted text-sm font-semibold">{label}</p>
-      <p className="section-title mt-2 text-3xl font-semibold">{value}</p>
-    </article>
   );
 }

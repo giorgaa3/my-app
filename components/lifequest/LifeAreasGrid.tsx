@@ -1,3 +1,7 @@
+"use client";
+
+import { useLanguage } from "@/hooks/use-language";
+import { getLifeAreaLabelKey } from "@/lib/i18n";
 import { getLifeAreaProgress } from "@/lib/lifequest";
 import type { Habit, Task } from "@/lib/types";
 
@@ -9,18 +13,19 @@ type LifeAreasGridProps = {
 
 export function LifeAreasGrid({ habits, tasks, todayKey }: LifeAreasGridProps) {
   const areas = getLifeAreaProgress(tasks, habits, todayKey);
+  const { t } = useLanguage();
 
   return (
     <section className="dashboard-card rounded-2xl p-5">
       <div className="flex flex-col gap-2">
         <p className="section-muted text-sm font-semibold uppercase">
-          Life Areas
+          {t("lifeAreas.eyebrow")}
         </p>
         <h2 className="section-title text-2xl font-semibold">
-          Balance your real-life build
+          {t("lifeAreas.title")}
         </h2>
         <p className="section-muted max-w-2xl text-sm leading-6">
-          Tasks and habits feed the areas that make LifeQuest more meaningful.
+          {t("lifeAreas.description")}
         </p>
       </div>
 
@@ -34,10 +39,10 @@ export function LifeAreasGrid({ habits, tasks, todayKey }: LifeAreasGridProps) {
               </span>
             </div>
             <h3 className="section-title mt-3 text-sm font-semibold">
-              {area.area}
+              {t(getLifeAreaLabelKey(area.area))}
             </h3>
             <p className="section-muted mt-1 text-xs font-medium">
-              {area.completed}/{area.total} actions
+              {area.completed}/{area.total} {t("common.actions")}
             </p>
             <div className="progress-track mt-3">
               <div className="progress-bar" style={{ width: `${area.progress}%` }} />

@@ -1,7 +1,14 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
+import { useLanguage } from "@/hooks/use-language";
+import {
+  getLifeAreaLabelKey,
+  getPriorityLabelKey,
+} from "@/lib/i18n";
+import { formatFriendlyDate } from "@/lib/date";
 import { getLifeAreaOption } from "@/lib/lifeAreas";
 import {
-  getDueDateLabel,
   isTaskOverdue,
   priorityStyles,
 } from "@/lib/tasks";
@@ -26,6 +33,7 @@ export function TaskRow({
   const overdue = isTaskOverdue(task, todayKey);
   const priority = priorityStyles[task.priority];
   const lifeArea = getLifeAreaOption(task.category);
+  const { t } = useLanguage();
 
   return (
     <li
@@ -36,7 +44,11 @@ export function TaskRow({
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
         <button
-          aria-label={task.completed ? "Mark task active" : "Mark task complete"}
+          aria-label={
+            task.completed
+              ? t("aria.markTaskActive")
+              : t("aria.markTaskComplete")
+          }
           className={cn(
             "flex h-8 w-8 shrink-0 items-center justify-center rounded-md border transition focus:outline-none focus:ring-4 focus:ring-teal-100",
             task.completed
@@ -64,7 +76,7 @@ export function TaskRow({
             {overdue ? (
               <span className="inline-flex items-center gap-1 rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700">
                 <Icon name="alert" className="h-3.5 w-3.5" />
-                Overdue
+                {t("common.overdue")}
               </span>
             ) : null}
           </div>
@@ -77,24 +89,24 @@ export function TaskRow({
               )}
             >
               <span className={cn("h-2 w-2 rounded-full", priority.dot)} />
-              {priority.label}
+              {t(getPriorityLabelKey(task.priority))}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs font-semibold text-[var(--muted)]">
               <Icon name="calendar" className="h-3.5 w-3.5" />
-              {getDueDateLabel(task, todayKey)}
+              {getTranslatedDueDateLabel(task, todayKey, t)}
             </span>
             <span className="inline-flex rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs font-semibold text-[var(--muted)]">
-              {task.completed ? "Completed" : "Active"}
+              {task.completed ? t("common.completed") : t("common.active")}
             </span>
             <span className="accent-badge inline-flex rounded-md px-2 py-1 text-xs font-semibold">
-              {lifeArea.emoji} {lifeArea.area}
+              {lifeArea.emoji} {t(getLifeAreaLabelKey(lifeArea.area))}
             </span>
           </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-1 self-start">
           <button
-            aria-label={`Edit ${task.title}`}
+            aria-label={t("aria.editTask", { title: task.title })}
             className="icon-button flex h-9 w-9 items-center justify-center rounded-md transition"
             onClick={() => onEditTask(task)}
             type="button"
@@ -102,7 +114,7 @@ export function TaskRow({
             <Icon name="edit" className="h-4 w-4" />
           </button>
           <button
-            aria-label={`Delete ${task.title}`}
+            aria-label={t("aria.deleteTask", { title: task.title })}
             className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--muted)] transition hover:bg-rose-50 hover:text-rose-600 focus:outline-none focus:ring-4 focus:ring-rose-100"
             onClick={() => onDeleteTask(task.id)}
             type="button"
@@ -113,4 +125,26 @@ export function TaskRow({
       </div>
     </li>
   );
+}
+
+function getTranslatedDueDateLabel(
+  task: Task,
+  todayKey: string,
+  t: ReturnType<typeof useLanguage>["t"],
+) {
+  if (!task.dueDate) {
+    return t("date.noDueDate");
+  }
+
+  if (task.dueDate === todayKey) {
+    return t("date.dueToday");
+  }
+
+  if (isTaskOverdue(task, todayKey)) {
+    return t("date.overdueSince", {
+      date: formatFriendlyDate(task.dueDate),
+    });
+  }
+
+  return t("date.due", { date: formatFriendlyDate(task.dueDate) });
 }

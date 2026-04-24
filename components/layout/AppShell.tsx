@@ -4,69 +4,73 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useLanguage } from "@/hooks/use-language";
+import { getLevelTitleKey, type TranslationKey } from "@/lib/i18n";
 import { getLevelInfo } from "@/lib/lifequest";
 import { cn } from "@/lib/utils";
-import { useLifeQuest } from "@/components/providers/LifeQuestProvider";
 
 type AppShellProps = {
   children: ReactNode;
 };
 
 const navItems: Array<{
-  description: string;
+  descriptionKey: TranslationKey;
   href: string;
   icon: IconName;
-  label: string;
+  labelKey: TranslationKey;
 }> = [
   {
-    description: "Overview",
+    descriptionKey: "nav.dashboard.description",
     href: "/",
     icon: "spark",
-    label: "Dashboard",
+    labelKey: "nav.dashboard.label",
   },
   {
-    description: "Plan and finish work",
+    descriptionKey: "nav.tasks.description",
     href: "/tasks",
     icon: "list",
-    label: "Tasks",
+    labelKey: "nav.tasks.label",
   },
   {
-    description: "Daily routines",
+    descriptionKey: "nav.habits.description",
     href: "/habits",
     icon: "flame",
-    label: "Habits",
+    labelKey: "nav.habits.label",
   },
   {
-    description: "25-minute sessions",
+    descriptionKey: "nav.focus.description",
     href: "/focus",
     icon: "circle",
-    label: "Focus",
+    labelKey: "nav.focus.label",
   },
   {
-    description: "Today’s rewards",
+    descriptionKey: "nav.quests.description",
     href: "/quests",
     icon: "target",
-    label: "Quests",
+    labelKey: "nav.quests.label",
   },
   {
-    description: "Badges and shop",
+    descriptionKey: "nav.achievements.description",
     href: "/achievements",
     icon: "checkCircle",
-    label: "Achievements",
+    labelKey: "nav.achievements.label",
   },
   {
-    description: "Character stats",
+    descriptionKey: "nav.profile.description",
     href: "/profile",
     icon: "flag",
-    label: "Profile",
+    labelKey: "nav.profile.label",
   },
 ];
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const { isStorageReady, profile, theme, toggleTheme } = useLifeQuest();
+  const { t } = useLanguage();
   const levelInfo = getLevelInfo(profile.xp);
 
   return (
@@ -92,10 +96,10 @@ export function AppShell({ children }: AppShellProps) {
               </div>
               <div className="min-w-0">
                 <p className="section-title truncate text-sm font-semibold">
-                  Level {levelInfo.level}
+                  {t("common.level")} {levelInfo.level}
                 </p>
                 <p className="section-muted truncate text-xs font-semibold">
-                  {levelInfo.title}
+                  {t(getLevelTitleKey(levelInfo.title))}
                 </p>
               </div>
             </div>
@@ -106,7 +110,7 @@ export function AppShell({ children }: AppShellProps) {
               />
             </div>
             <p className="section-muted mt-2 text-xs font-medium">
-              {levelInfo.xpToNextLevel} XP to next level
+              {t("dashboard.nextLevel", { xp: levelInfo.xpToNextLevel })}
             </p>
           </div>
         </aside>
@@ -115,7 +119,10 @@ export function AppShell({ children }: AppShellProps) {
           <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--surface)]/80 px-4 py-3 backdrop-blur-xl lg:hidden">
             <div className="flex items-center justify-between gap-3">
               <BrandBlock compact />
-              <ThemeToggle onToggle={toggleTheme} theme={theme} />
+              <div className="flex items-center gap-2">
+                <LanguageToggle />
+                <ThemeToggle onToggle={toggleTheme} theme={theme} />
+              </div>
             </div>
             <nav
               aria-label="Main"
@@ -133,7 +140,7 @@ export function AppShell({ children }: AppShellProps) {
                   key={item.href}
                 >
                   <Icon name={item.icon} className="h-4 w-4" />
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
             </nav>
@@ -142,8 +149,9 @@ export function AppShell({ children }: AppShellProps) {
           <header className="hidden items-center justify-end gap-3 px-6 pt-5 lg:flex">
             <div className="accent-badge inline-flex min-h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold">
               <Icon name="checkCircle" className="h-4 w-4" />
-              {isStorageReady ? "Autosaved locally" : "Syncing"}
+              {isStorageReady ? t("app.autosaved") : t("app.syncing")}
             </div>
+            <LanguageToggle />
             <ThemeToggle onToggle={toggleTheme} theme={theme} />
           </header>
 
@@ -157,6 +165,8 @@ export function AppShell({ children }: AppShellProps) {
 }
 
 function BrandBlock({ compact = false }: { compact?: boolean }) {
+  const { t } = useLanguage();
+
   return (
     <Link className="flex min-w-0 items-center gap-3" href="/">
       <div
@@ -169,7 +179,7 @@ function BrandBlock({ compact = false }: { compact?: boolean }) {
       </div>
       <div className="min-w-0">
         <p className="section-muted text-xs font-semibold uppercase">
-          Productivity RPG
+          {t("app.brandSubtitle")}
         </p>
         <p className="section-title truncate text-lg font-semibold">
           LifeQuest
@@ -186,6 +196,8 @@ function NavLink({
   active: boolean;
   item: (typeof navItems)[number];
 }) {
+  const { t } = useLanguage();
+
   return (
     <Link
       className={cn(
@@ -207,14 +219,14 @@ function NavLink({
         <Icon name={item.icon} className="h-4 w-4" />
       </span>
       <span className="min-w-0">
-        <span className="block text-sm font-semibold">{item.label}</span>
+        <span className="block text-sm font-semibold">{t(item.labelKey)}</span>
         <span
           className={cn(
             "block truncate text-xs font-medium",
             active ? "text-white/65" : "text-[var(--muted)]",
           )}
         >
-          {item.description}
+          {t(item.descriptionKey)}
         </span>
       </span>
     </Link>

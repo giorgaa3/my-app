@@ -1,5 +1,5 @@
-import { ProfilePage } from "@/components/pages/ProfilePage";
+import { ProfileView } from "@/components/views/ProfileView";
 
 export default function ProfileRoute() {
-  return <ProfilePage />;
+  return <ProfileView />;
 }
