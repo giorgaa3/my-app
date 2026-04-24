@@ -41,11 +41,12 @@ export type ToastTone = "success" | "error" | "info";
 
 export type AvatarItemCategory =
   | "hair"
-  | "outfit"
+  | "top"
+  | "pants"
+  | "shoes"
   | "accessory"
   | "background"
-  | "frame"
-  | "theme";
+  | "frame";
 
 export type AvatarRarity = "common" | "rare" | "epic" | "legendary";
 

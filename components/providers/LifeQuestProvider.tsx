@@ -20,6 +20,7 @@ import {
   equipAvatarItem as equipAvatarItemHelper,
   initialUserAvatar,
   normalizeUserAvatar,
+  unequipAvatarCategory as unequipAvatarCategoryHelper,
 } from "@/lib/avatar";
 import { getTodayKey } from "@/lib/date";
 import { getHabitDashboardSummary, normalizeHabits } from "@/lib/habits";
@@ -41,6 +42,7 @@ import { getTaskSummary, normalizeTasks } from "@/lib/tasks";
 import type {
   DashboardStats,
   AvatarItem,
+  AvatarItemCategory,
   Habit,
   HabitInput,
   LevelUpDetails,
@@ -83,6 +85,7 @@ type LifeQuestContextValue = {
   toggleHabitToday: (habitId: string) => void;
   toggleTask: (taskId: string) => void;
   toggleTheme: () => void;
+  unequipAvatarCategory: (category: AvatarItemCategory) => void;
   updateTask: (taskId: string, task: TaskInput) => void;
 };
 
@@ -508,6 +511,18 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
     [avatar, setAvatar, showToast, t],
   );
 
+  const unequipAvatarCategory = useCallback(
+    (category: AvatarItemCategory) => {
+      if (!avatar.equipped[category]) {
+        return;
+      }
+
+      setAvatar(unequipAvatarCategoryHelper(avatar, category));
+      showToast(t("toast.avatarUnequipped"), "info");
+    },
+    [avatar, setAvatar, showToast, t],
+  );
+
   const contextValue = useMemo<LifeQuestContextValue>(
     () => ({
       addHabit,
@@ -533,6 +548,7 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       toggleHabitToday,
       toggleTask,
       toggleTheme,
+      unequipAvatarCategory,
       updateTask,
     }),
     [
@@ -559,6 +575,7 @@ export function LifeQuestProvider({ children }: LifeQuestProviderProps) {
       toggleHabitToday,
       toggleTask,
       toggleTheme,
+      unequipAvatarCategory,
       updateTask,
     ],
   );

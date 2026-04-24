@@ -65,6 +65,12 @@ const navItems: Array<{
     icon: "flag",
     labelKey: "nav.profile.label",
   },
+  {
+    descriptionKey: "nav.shop.description",
+    href: "/shop",
+    icon: "shoppingBag",
+    labelKey: "nav.shop.label",
+  },
 ];
 
 export function AppShell({ children }: AppShellProps) {

@@ -24,12 +24,18 @@ export type AvatarPurchaseResult =
 
 export const avatarCategories: AvatarItemCategory[] = [
   "hair",
-  "outfit",
+  "top",
+  "pants",
+  "shoes",
   "accessory",
   "background",
   "frame",
-  "theme",
 ];
+
+const legacyCategoryMap: Record<string, AvatarItemCategory> = {
+  outfit: "top",
+  theme: "background",
+};
 
 export const initialUserAvatar: UserAvatar = {
   equipped: {},
@@ -49,12 +55,25 @@ export function normalizeUserAvatar(value: unknown): UserAvatar {
     : [];
   const equipped =
     storedAvatar.equipped && typeof storedAvatar.equipped === "object"
-      ? Object.fromEntries(
-          Object.entries(storedAvatar.equipped).filter(
-            ([category, itemId]) =>
-              avatarCategories.includes(category as AvatarItemCategory) &&
-              typeof itemId === "string",
-          ),
+      ? Object.entries(storedAvatar.equipped).reduce<UserAvatar["equipped"]>(
+          (nextEquipped, [rawCategory, itemId]) => {
+            const category =
+              legacyCategoryMap[rawCategory] ??
+              (rawCategory as AvatarItemCategory);
+
+            if (
+              !avatarCategories.includes(category) ||
+              typeof itemId !== "string"
+            ) {
+              return nextEquipped;
+            }
+
+            return {
+              ...nextEquipped,
+              [category]: itemId,
+            };
+          },
+          {},
         )
       : {};
 
@@ -137,6 +156,23 @@ export function equipAvatarItem(
       ...avatar.equipped,
       [item.category]: item.id,
     },
+  };
+}
+
+export function unequipAvatarCategory(
+  avatar: UserAvatar,
+  category: AvatarItemCategory,
+): UserAvatar {
+  if (!avatar.equipped[category]) {
+    return avatar;
+  }
+
+  const equipped = { ...avatar.equipped };
+  delete equipped[category];
+
+  return {
+    ...avatar,
+    equipped,
   };
 }
 

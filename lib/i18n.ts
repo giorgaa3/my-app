@@ -331,6 +331,7 @@ export const translations = {
     "shop.coinBalance": "Coin balance",
     "shop.completion": "Avatar completion",
     "shop.currentLevel": "Current level",
+    "shop.currentLook": "Current",
     "shop.description":
       "Use coins earned from tasks, habits, focus sessions, and quests to unlock cosmetic upgrades for your LifeQuest character.",
     "shop.equip": "Equip",
@@ -342,6 +343,7 @@ export const translations = {
     "shop.ownedItems": "Owned items",
     "shop.previewHelper":
       "Buy cosmetics, equip one item per category, and watch your profile character evolve.",
+    "shop.previewLook": "Preview",
     "shop.price": "{price} coins",
     "shop.requiredLevel": "Requires level {level}",
     "shop.rarity.common": "Common",
@@ -349,6 +351,7 @@ export const translations = {
     "shop.rarity.legendary": "Legendary",
     "shop.rarity.rare": "Rare",
     "shop.title": "Spend coins on your character",
+    "shop.unequip": "Unequip",
     "stat.activeHabits.detail": "Routines available to check off today.",
     "stat.activeHabits.label": "Active habits",
     "stat.completedTasks.detail": "Tasks moved across the finish line.",
@@ -401,6 +404,7 @@ export const translations = {
     "toast.avatarNotEnoughCoins":
       "Not enough coins yet. You have {coins}, but this costs {price}.",
     "toast.avatarPurchased": "Cosmetic purchased and added to your avatar.",
+    "toast.avatarUnequipped": "Avatar category unequipped.",
     "toast.duplicateHabit": "That habit already exists.",
     "toast.focusComplete": "Focus session complete: +{xp} XP",
     "toast.habitAdded": "Habit added to your training plan.",
@@ -660,6 +664,8 @@ export const translations = {
     "nav.profile.label": "პროფილი",
     "nav.quests.description": "დღევანდელი ჯილდოები",
     "nav.quests.label": "მისიები",
+    "nav.shop.description": "ავატარის განახლებები",
+    "nav.shop.label": "მაღაზია",
     "nav.tasks.description": "დაგეგმე და შეასრულე",
     "nav.tasks.label": "დავალებები",
     "preview.openQuests": "მისიების გახსნა",
@@ -671,12 +677,19 @@ export const translations = {
     "priority.medium": "საშუალო",
     "profile.characterCard.description": "რეალური პროგრესი XP-ად, მონეტებად და მოძრაობად იქცევა.",
     "profile.characterCard.eyebrow": "LifeQuest პერსონაჟი",
+    "profile.customizeDescription":
+      "დახარჯე მონეტები კოსმეტიკაზე, აირჩიე თითო ნივთი კატეგორიაში და პერსონაჟს დამსახურებული იერი მიეცი.",
+    "profile.customizeTitle": "ავატარის მორგება",
     "profile.description": "შენი პერსონაჟის ბარათი, XP პროგრესი, მონეტები, სერია და მთავარი სტატები.",
     "profile.eyebrow": "პროფილი / პერსონაჟი",
     "profile.focusSessions": "ფოკუს სესიები",
     "profile.habitCheckIns": "ჩვევის ჩექ-ინები",
     "profile.mainStats": "მთავარი სტატები",
     "profile.nextLevel": "შემდეგი ლეველი",
+    "profile.noOwnedItems":
+      "კოსმეტიკა ჯერ არ გაქვს. შეასრულე მისიები, დააგროვე მონეტები და გახსენი მაღაზია.",
+    "profile.openShop": "მაღაზიის გახსნა",
+    "profile.ownedItems": "შეძენილი ნივთები",
     "profile.progressSnapshot": "პროგრესის სურათი",
     "profile.streak": "სერია",
     "profile.tasksCompleted": "შესრულებული დავალებები",
@@ -711,6 +724,33 @@ export const translations = {
     "reward.shop.title": "კოსმეტიკური გახსნები",
     "reward.verdant-frame.description": "მშვიდი მწვანე პროფილის ჩარჩო საწყისი იმპულსისთვის.",
     "reward.verdant-frame.title": "მწვანე ჩარჩო",
+    "shop.allItems": "ყველა კოსმეტიკა",
+    "shop.buy": "ყიდვა",
+    "shop.categoryCount": "{count} ნივთი",
+    "shop.coinBalance": "მონეტების ბალანსი",
+    "shop.completion": "ავატარის დასრულება",
+    "shop.currentLevel": "მიმდინარე ლეველი",
+    "shop.currentLook": "ახლანდელი",
+    "shop.description":
+      "გამოიყენე დავალებებით, ჩვევებით, ფოკუს სესიებით და მისიებით დაგროვებული მონეტები შენი LifeQuest პერსონაჟის გასაუმჯობესებლად.",
+    "shop.equip": "მორგება",
+    "shop.equipped": "მორგებულია",
+    "shop.eyebrow": "ავატარის მაღაზია",
+    "shop.locked": "დაკეტილია",
+    "shop.notEnoughCoins": "მონეტები არ გყოფნის",
+    "shop.owned": "შეძენილია",
+    "shop.ownedItems": "შეძენილი ნივთები",
+    "shop.previewHelper":
+      "იყიდე კოსმეტიკა, მოირგე თითო ნივთი კატეგორიაში და ნახე როგორ ვითარდება შენი პროფილის პერსონაჟი.",
+    "shop.previewLook": "ნახვა",
+    "shop.price": "{price} მონეტა",
+    "shop.requiredLevel": "საჭიროა {level} ლეველი",
+    "shop.rarity.common": "ჩვეულებრივი",
+    "shop.rarity.epic": "ეპიკური",
+    "shop.rarity.legendary": "ლეგენდარული",
+    "shop.rarity.rare": "იშვიათი",
+    "shop.title": "დახარჯე მონეტები პერსონაჟზე",
+    "shop.unequip": "მოხსნა",
     "stat.activeHabits.detail": "რუტინები, რომლებიც დღეს შეგიძლია მონიშნო.",
     "stat.activeHabits.label": "აქტიური ჩვევები",
     "stat.completedTasks.detail": "დავალებები, რომლებიც ფინიშამდე მიიყვანე.",
@@ -755,6 +795,14 @@ export const translations = {
     "theme.switchLight": "ნათელ რეჟიმზე გადართვა",
     "toast.addHabitName": "ჯერ ჩვევის სახელი დაამატე.",
     "toast.addTaskTitle": "ჯერ დავალების სათაური დაამატე.",
+    "toast.avatarAlreadyOwned": "ეს კოსმეტიკა უკვე გაქვს.",
+    "toast.avatarEquipLocked": "მორგებამდე ჯერ ეს კოსმეტიკა უნდა იყიდო.",
+    "toast.avatarEquipped": "ავატარის კოსმეტიკა მორგებულია.",
+    "toast.avatarLocked": "ეს კოსმეტიკა {level} ლეველზე იხსნება.",
+    "toast.avatarNotEnoughCoins":
+      "მონეტები ჯერ არ გყოფნის. გაქვს {coins}, ფასი კი {price}-ია.",
+    "toast.avatarPurchased": "კოსმეტიკა შეძენილია და ავატარს დაემატა.",
+    "toast.avatarUnequipped": "ავატარის კატეგორია მოიხსნა.",
     "toast.duplicateHabit": "ეს ჩვევა უკვე არსებობს.",
     "toast.focusComplete": "ფოკუს სესია დასრულდა: +{xp} XP",
     "toast.habitAdded": "ჩვევა დაემატა შენს გეგმას.",
@@ -827,6 +875,24 @@ export function getAchievementDescriptionKey(id: string): TranslationKey {
 
 export function getAchievementTitleKey(id: string): TranslationKey {
   return `achievement.${id}.title` as TranslationKey;
+}
+
+export function getAvatarCategoryLabelKey(
+  category: AvatarItemCategory,
+): TranslationKey {
+  return `avatar.category.${category}` as TranslationKey;
+}
+
+export function getAvatarItemDescriptionKey(id: string): TranslationKey {
+  return `avatarItem.${id}.description` as TranslationKey;
+}
+
+export function getAvatarItemNameKey(id: string): TranslationKey {
+  return `avatarItem.${id}.name` as TranslationKey;
+}
+
+export function getAvatarRarityLabelKey(rarity: AvatarRarity): TranslationKey {
+  return `shop.rarity.${rarity}` as TranslationKey;
 }
 
 export function getDailyQuestDescriptionKey(id: string): TranslationKey {

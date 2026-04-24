@@ -239,6 +239,42 @@ button:disabled {
   .level-up-panel {
     animation: level-up-in 260ms ease-out both;
   }
+
+  .avatar-layer {
+    animation: avatar-layer-in 180ms ease-out both;
+    transform-origin: 50% 55%;
+    will-change: opacity, transform;
+  }
+
+  .avatar-action-pulse {
+    animation: avatar-action-pulse 260ms ease-out both;
+  }
+}
+
+@keyframes avatar-layer-in {
+  from {
+    opacity: 0;
+    transform: scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes avatar-action-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.015);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes level-up-in {

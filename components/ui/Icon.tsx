@@ -24,6 +24,13 @@ const iconPaths = {
     </>
   ),
   circle: <circle cx="12" cy="12" r="8" />,
+  coins: (
+    <>
+      <ellipse cx="12" cy="6" rx="7" ry="3" />
+      <path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
+      <path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5" />
+    </>
+  ),
   edit: (
     <>
       <path d="M12 20h9" />
@@ -75,6 +82,12 @@ const iconPaths = {
     <>
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.5-3.5" />
+    </>
+  ),
+  shoppingBag: (
+    <>
+      <path d="M6 8h12l-1 12H7L6 8Z" />
+      <path d="M9 8a3 3 0 0 1 6 0" />
     </>
   ),
   spark: (
