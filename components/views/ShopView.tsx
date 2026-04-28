@@ -42,11 +42,7 @@ export function ShopView() {
       />
 
       <div className="grid gap-6 xl:grid-cols-[390px_minmax(0,1fr)]">
-        <AvatarPreview
-          avatar={avatar}
-          onUnequip={unequipAvatarCategory}
-          profile={profile}
-        />
+        <AvatarPreview avatar={avatar} profile={profile} />
 
         <section className="dashboard-card rounded-2xl p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
