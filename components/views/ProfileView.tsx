@@ -3,7 +3,8 @@
 import Link from "next/link";
 
 import { AvatarPreview } from "@/components/avatar/AvatarPreview";
-import { OwnedAvatarItems } from "@/components/avatar/OwnedAvatarItems";
+import { EquippedLoadoutSection } from "@/components/avatar/EquippedLoadoutSection";
+import { OwnedItemsSection } from "@/components/avatar/OwnedItemsSection";
 import { StatsGrid } from "@/components/dashboard/StatsGrid";
 import { LifeAreasGrid } from "@/components/lifequest/LifeAreasGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -24,6 +25,7 @@ export function ProfileView() {
     stats,
     tasks,
     todayKey,
+    equipAvatarItem,
     unequipAvatarCategory,
   } = useLifeQuest();
   const { t } = useLanguage();
@@ -47,11 +49,7 @@ export function ProfileView() {
       />
 
       <div className="grid gap-6 xl:grid-cols-[390px_minmax(0,1fr)]">
-        <AvatarPreview
-          avatar={avatar}
-          onUnequip={unequipAvatarCategory}
-          profile={profile}
-        />
+        <AvatarPreview avatar={avatar} profile={profile} />
 
         <section className="dashboard-card rounded-2xl p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -121,7 +119,16 @@ export function ProfileView() {
         </section>
       </div>
 
-      <OwnedAvatarItems avatar={avatar} items={avatarItems} />
+      <EquippedLoadoutSection
+        avatar={avatar}
+        onUnequip={unequipAvatarCategory}
+      />
+      <OwnedItemsSection
+        avatar={avatar}
+        items={avatarItems}
+        onEquip={equipAvatarItem}
+        onUnequip={unequipAvatarCategory}
+      />
       <StatsGrid stats={stats} />
       <LifeAreasGrid habits={habits} tasks={tasks} todayKey={todayKey} />
     </div>
