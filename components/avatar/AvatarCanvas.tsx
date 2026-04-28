@@ -24,19 +24,21 @@ import { cn } from "@/lib/utils";
 type AvatarCanvasProps = {
   avatar: UserAvatar;
   className?: string;
-  size?: "lg" | "md" | "sm";
+  size?: "lg" | "md" | "sm" | "xs";
 };
 
 const canvasSizeClasses = {
   lg: "min-h-[430px] rounded-2xl p-6",
   md: "min-h-[340px] rounded-2xl p-5",
   sm: "h-36 w-28 rounded-2xl p-2",
+  xs: "h-28 w-20 rounded-xl p-1.5",
 } as const;
 
 const figureSizeClasses = {
   lg: "w-[260px]",
   md: "w-[210px]",
   sm: "w-[88px]",
+  xs: "w-[68px]",
 } as const;
 
 export function AvatarCanvas({
