@@ -15,6 +15,7 @@ import {
 } from "@/lib/i18n";
 import {
   getAvatarWithPreviewItem,
+  getAvatarWithoutCategory,
   getPreviewAvatarForItem,
   rarityAccentClasses,
 } from "@/lib/avatar-renderer";
@@ -71,7 +72,10 @@ export function CosmeticItemCard({
   const state = getAvatarItemState(coins, level, item, avatar);
   const isLocked = state === "locked";
   const isDisabled = state === "locked" || state === "not-enough-coins";
-  const previewAvatar = getAvatarWithPreviewItem(avatar, item);
+  const previewAvatar =
+    state === "equipped"
+      ? getAvatarWithoutCategory(avatar, item.category)
+      : getAvatarWithPreviewItem(avatar, item);
   const itemOnlyAvatar = getPreviewAvatarForItem(item);
 
   function runWithFeedback(action: () => void) {
@@ -95,7 +99,7 @@ export function CosmeticItemCard({
             rarityAccentClasses[item.rarity],
           )}
         >
-          <AvatarCanvas avatar={itemOnlyAvatar} size="sm" />
+          <AvatarCanvas avatar={itemOnlyAvatar} size="xs" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
