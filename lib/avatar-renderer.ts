@@ -164,3 +164,16 @@ export function getAvatarWithPreviewItem(
       : [...avatar.ownedItemIds, item.id],
   };
 }
+
+export function getAvatarWithoutCategory(
+  avatar: UserAvatar,
+  category: AvatarItemCategory,
+): UserAvatar {
+  const equipped = { ...avatar.equipped };
+  delete equipped[category];
+
+  return {
+    ...avatar,
+    equipped,
+  };
+}
