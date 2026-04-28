@@ -50,7 +50,10 @@ export const translations = {
     "avatar.category.frame": "Frames",
     "avatar.category.hair": "Hair",
     "avatar.category.outfit": "Outfits",
+    "avatar.category.pants": "Pants",
+    "avatar.category.shoes": "Shoes",
     "avatar.category.theme": "Themes",
+    "avatar.category.top": "Tops",
     "avatar.equippedLoadout": "Equipped loadout",
     "avatar.previewDescription":
       "Your equipped cosmetics update instantly across the shop and profile.",
@@ -73,6 +76,12 @@ export const translations = {
     "avatarItem.focus-armor.description":
       "A polished armor set for deep work sessions.",
     "avatarItem.focus-armor.name": "Focus Armor",
+    "avatarItem.focus-boots.description":
+      "Grounded boots for long focus sessions.",
+    "avatarItem.focus-boots.name": "Focus Boots",
+    "avatarItem.focus-trousers.description":
+      "Structured focus trousers with a polished profile look.",
+    "avatarItem.focus-trousers.name": "Focus Trousers",
     "avatarItem.glass-frame.description":
       "A cool glass frame for a clean productivity look.",
     "avatarItem.glass-frame.name": "Glass Frame",
@@ -82,6 +91,9 @@ export const translations = {
     "avatarItem.headphones.description":
       "A quiet signal that you are in focus mode.",
     "avatarItem.headphones.name": "Headphones",
+    "avatarItem.lunar-pants.description":
+      "Lightweight lunar pants for late-game productivity runs.",
+    "avatarItem.lunar-pants.name": "Lunar Pants",
     "avatarItem.morning-field-background.description":
       "A calm sunrise field for steady morning progress.",
     "avatarItem.morning-field-background.name": "Morning Field Background",
@@ -91,12 +103,21 @@ export const translations = {
     "avatarItem.royal-productivity-theme.description":
       "A royal glow for the most dedicated LifeQuest profiles.",
     "avatarItem.royal-productivity-theme.name": "Royal Productivity Theme",
+    "avatarItem.rocket-runners.description":
+      "Fast premium runners for high-energy days.",
+    "avatarItem.rocket-runners.name": "Rocket Runners",
     "avatarItem.shadow-shades.description":
       "A confident accessory for bright dashboard days.",
     "avatarItem.shadow-shades.name": "Shadow Shades",
     "avatarItem.space-suit.description":
       "A premium suit for high-orbit productivity days.",
     "avatarItem.space-suit.name": "Space Suit",
+    "avatarItem.starter-sneakers.description":
+      "Simple sneakers for starting every quest on the right foot.",
+    "avatarItem.starter-sneakers.name": "Starter Sneakers",
+    "avatarItem.utility-joggers.description":
+      "Clean tapered pants for everyday progress.",
+    "avatarItem.utility-joggers.name": "Utility Joggers",
     "common.active": "Active",
     "common.actions": "actions",
     "common.addHabit": "Add habit",
@@ -283,12 +304,17 @@ export const translations = {
     "profile.eyebrow": "Profile / Character",
     "profile.focusSessions": "Focus sessions",
     "profile.habitCheckIns": "Habit check-ins",
+    "profile.equippedLoadoutDescription":
+      "Review every equipped layer. Required clothing falls back to a clean default when unequipped.",
+    "profile.equippedLoadoutTitle": "Equipped Loadout",
     "profile.mainStats": "Main stats",
     "profile.nextLevel": "Next level",
     "profile.noOwnedItems":
       "No cosmetics owned yet. Complete quests, earn coins, then visit the shop.",
     "profile.openShop": "Open Shop",
     "profile.ownedItems": "Owned items",
+    "profile.ownedItemsDescription":
+      "Your purchased cosmetics stay owned. Equip, preview, or unequip them without losing anything.",
     "profile.progressSnapshot": "Progress snapshot",
     "profile.streak": "Streak",
     "profile.tasksCompleted": "Tasks completed",
@@ -328,10 +354,12 @@ export const translations = {
     "shop.allItems": "All cosmetics",
     "shop.buy": "Buy",
     "shop.categoryCount": "{count} items",
+    "shop.change": "Change",
     "shop.coinBalance": "Coin balance",
     "shop.completion": "Avatar completion",
     "shop.currentLevel": "Current level",
     "shop.currentLook": "Current",
+    "shop.default": "Default",
     "shop.description":
       "Use coins earned from tasks, habits, focus sessions, and quests to unlock cosmetic upgrades for your LifeQuest character.",
     "shop.equip": "Equip",
@@ -339,6 +367,7 @@ export const translations = {
     "shop.eyebrow": "Avatar Shop",
     "shop.locked": "Locked",
     "shop.notEnoughCoins": "Not enough coins",
+    "shop.none": "None",
     "shop.owned": "Owned",
     "shop.ownedItems": "Owned items",
     "shop.previewHelper":
@@ -458,7 +487,10 @@ export const translations = {
     "avatar.category.frame": "ჩარჩოები",
     "avatar.category.hair": "თმა",
     "avatar.category.outfit": "სამოსი",
+    "avatar.category.pants": "შარვლები",
+    "avatar.category.shoes": "ფეხსაცმელი",
     "avatar.category.theme": "თემები",
+    "avatar.category.top": "ზედები",
     "avatar.equippedLoadout": "აქტიური იერსახე",
     "avatar.previewDescription":
       "არჩეული კოსმეტიკა მაშინვე ჩანს მაღაზიაშიც და პროფილშიც.",
@@ -481,6 +513,12 @@ export const translations = {
     "avatarItem.focus-armor.description":
       "გაპრიალებული აბჯარი ღრმა მუშაობის სესიებისთვის.",
     "avatarItem.focus-armor.name": "ფოკუსის აბჯარი",
+    "avatarItem.focus-boots.description":
+      "მყარი ბოტები გრძელი ფოკუს სესიებისთვის.",
+    "avatarItem.focus-boots.name": "ფოკუსის ბოტები",
+    "avatarItem.focus-trousers.description":
+      "სტრუქტურირებული შარვალი სუფთა, პროფესიული იერისთვის.",
+    "avatarItem.focus-trousers.name": "ფოკუსის შარვალი",
     "avatarItem.glass-frame.description":
       "ცივი მინის ჩარჩო სუფთა პროდუქტიული იერისთვის.",
     "avatarItem.glass-frame.name": "მინის ჩარჩო",
@@ -490,6 +528,9 @@ export const translations = {
     "avatarItem.headphones.description":
       "მშვიდი ნიშანი, რომ ფოკუსის რეჟიმში ხარ.",
     "avatarItem.headphones.name": "ყურსასმენები",
+    "avatarItem.lunar-pants.description":
+      "მსუბუქი მთვარის შარვალი გვიანი ეტაპის პროდუქტიული დღეებისთვის.",
+    "avatarItem.lunar-pants.name": "მთვარის შარვალი",
     "avatarItem.morning-field-background.description":
       "მშვიდი მზისამოსვლის ფონი სტაბილური დილის პროგრესისთვის.",
     "avatarItem.morning-field-background.name": "დილის ველის ფონი",
@@ -499,12 +540,21 @@ export const translations = {
     "avatarItem.royal-productivity-theme.description":
       "სამეფო ნათება ყველაზე ერთგული LifeQuest პროფილებისთვის.",
     "avatarItem.royal-productivity-theme.name": "სამეფო პროდუქტიულობის თემა",
+    "avatarItem.rocket-runners.description":
+      "სწრაფი პრემიუმ ფეხსაცმელი ენერგიული დღეებისთვის.",
+    "avatarItem.rocket-runners.name": "რაკეტის სნიკერები",
     "avatarItem.shadow-shades.description":
       "თავდაჯერებული აქსესუარი ნათელი სამუშაო დღეებისთვის.",
     "avatarItem.shadow-shades.name": "ჩრდილის სათვალე",
     "avatarItem.space-suit.description":
       "პრემიუმ კოსტიუმი მაღალი პროდუქტიულობის დღეებისთვის.",
     "avatarItem.space-suit.name": "კოსმოსური კოსტიუმი",
+    "avatarItem.starter-sneakers.description":
+      "მარტივი სნიკერები ყოველი მისიის სწორად დასაწყებად.",
+    "avatarItem.starter-sneakers.name": "საწყისი სნიკერები",
+    "avatarItem.utility-joggers.description":
+      "სუფთა, მოხერხებული შარვალი ყოველდღიური პროგრესისთვის.",
+    "avatarItem.utility-joggers.name": "პრაქტიკული ჯოგერები",
     "common.active": "აქტიური",
     "common.actions": "ქმედება",
     "common.addHabit": "ჩვევის დამატება",
@@ -684,12 +734,17 @@ export const translations = {
     "profile.eyebrow": "პროფილი / პერსონაჟი",
     "profile.focusSessions": "ფოკუს სესიები",
     "profile.habitCheckIns": "ჩვევის ჩექ-ინები",
+    "profile.equippedLoadoutDescription":
+      "გადაამოწმე ყველა აქტიური ფენა. აუცილებელი სამოსი მოხსნისას სუფთა საწყის იერს უბრუნდება.",
+    "profile.equippedLoadoutTitle": "აქტიური ლუქი",
     "profile.mainStats": "მთავარი სტატები",
     "profile.nextLevel": "შემდეგი ლეველი",
     "profile.noOwnedItems":
       "კოსმეტიკა ჯერ არ გაქვს. შეასრულე მისიები, დააგროვე მონეტები და გახსენი მაღაზია.",
     "profile.openShop": "მაღაზიის გახსნა",
     "profile.ownedItems": "შეძენილი ნივთები",
+    "profile.ownedItemsDescription":
+      "შეძენილი კოსმეტიკა შენთან რჩება. შეგიძლია მოირგო, ნახო ან მოხსნა დაკარგვის გარეშე.",
     "profile.progressSnapshot": "პროგრესის სურათი",
     "profile.streak": "სერია",
     "profile.tasksCompleted": "შესრულებული დავალებები",
@@ -727,10 +782,12 @@ export const translations = {
     "shop.allItems": "ყველა კოსმეტიკა",
     "shop.buy": "ყიდვა",
     "shop.categoryCount": "{count} ნივთი",
+    "shop.change": "შეცვლა",
     "shop.coinBalance": "მონეტების ბალანსი",
     "shop.completion": "ავატარის დასრულება",
     "shop.currentLevel": "მიმდინარე ლეველი",
     "shop.currentLook": "ახლანდელი",
+    "shop.default": "საწყისი",
     "shop.description":
       "გამოიყენე დავალებებით, ჩვევებით, ფოკუს სესიებით და მისიებით დაგროვებული მონეტები შენი LifeQuest პერსონაჟის გასაუმჯობესებლად.",
     "shop.equip": "მორგება",
@@ -738,6 +795,7 @@ export const translations = {
     "shop.eyebrow": "ავატარის მაღაზია",
     "shop.locked": "დაკეტილია",
     "shop.notEnoughCoins": "მონეტები არ გყოფნის",
+    "shop.none": "არაფერი",
     "shop.owned": "შეძენილია",
     "shop.ownedItems": "შეძენილი ნივთები",
     "shop.previewHelper":
